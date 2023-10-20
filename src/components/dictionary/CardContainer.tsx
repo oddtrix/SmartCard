@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import httpModule from "../../helpers/http.module";
-import AddCard from "../AddCard";
+import AddCard from "../card/AddCard";
 import { ICard } from "../../types/global.typing";
 import CardItem from "./CardItem";
 
@@ -20,72 +20,10 @@ const CardContainer = (props: { myCards: ICard[] }) => {
     setAddWord(!addWord);
   };
 
-  const save = () => {
-    httpModule.post("Domain/Create", card);
-    location.reload();
-  };
-
-  const deleteCard = (id: string) => {
-    if (id) {
-      console.log(id);
-      httpModule.delete(`Card/Delete`, { data: { id: id } });
-    }
-    location.reload();
-  };
-
-  const editt = (id: string) => {
-    if (id && updateCard.word !== null && updateCard.translation !== null) {
-      updateCard.id = id;
-    }
-  };
-
-  const editPut = () => {
-    httpModule.put(`Card/Update`, updateCard);
-    location.reload();
-  };
-
   return (
     <>
-      {/* {addWord ? <AddCard addword={addWord} setAddWord={setAddWord} /> : false} */}
-      {addWord ? (
-        <div className="border border-black inline-block rounded-md">
-          <input type="hidden" />
-          <div className="m-4">
-            <label className="mr-4">Word</label>
-            <input
-              type="text"
-              onChange={(e) => setCard({ ...card, word: e.target.value })}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 "
-            />
-          </div>
-          <div className="m-4">
-            <label className="mr-4">Translation</label>
-            <input
-              type="text"
-              onChange={(e) =>
-                setCard({ ...card, translation: e.target.value })
-              }
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 "
-            />
-          </div>
-          <button
-            onClick={save}
-            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-          >
-            Add
-          </button>
+      {addWord ? <AddCard addword={addWord} setAddWord={setAddWord} /> : false}
 
-          <button
-            type="button"
-            onClick={addNewWord}
-            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-          >
-            Cancel
-          </button>
-        </div>
-      ) : (
-        ""
-      )}
       {edit ? (
         <div className="border border-black inline-block rounded-md">
           <div className="m-4">

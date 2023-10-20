@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
 import { RootState } from "../store";
-import { UserLoginDTO } from "../../types/global.typing";
+import { UserLoginDTO, UserSignInDTO } from "../../types/global.typing";
 
 export const fetchAuth = createAsyncThunk(
   "auth/fetchAuth",
@@ -16,8 +16,8 @@ export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
 });
 export const fetchRegister = createAsyncThunk(
   "auth/fetchRegister",
-  async (params) => {
-    const { data } = await axios.post("/Authentication/Register", params);
+  async (userData: UserSignInDTO) => {
+    const { data } = await axios.post("/Authentication/Register", userData);
     return data;
   }
 );
@@ -37,7 +37,7 @@ type UserState = {
 
 const initialState: UserState = {
   data: null,
-  status: "loading",
+  status: "Loading",
 };
 
 const authSlice = createSlice({
@@ -50,39 +50,39 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [fetchAuth.pending.type]: (state) => {
-      state.status = "loading";
+      state.status = "Loading";
       state.data = null;
     },
     [fetchAuth.fulfilled.type]: (state, action) => {
-      state.status = "loaded";
+      state.status = "Loaded";
       state.data = action.payload;
     },
     [fetchAuth.rejected.type]: (state) => {
-      state.status = "error";
+      state.status = "Error";
       state.data = null;
     },
     [fetchAuthMe.pending.type]: (state) => {
-      state.status = "loading";
+      state.status = "Loading";
       state.data = null;
     },
     [fetchAuthMe.fulfilled.type]: (state, action) => {
-      state.status = "loaded";
+      state.status = "Loaded";
       state.data = action.payload;
     },
     [fetchAuthMe.rejected.type]: (state) => {
-      state.status = "error";
+      state.status = "Error";
       state.data = null;
     },
     [fetchRegister.pending.type]: (state) => {
-      state.status = "loading";
+      state.status = "Loading";
       state.data = null;
     },
     [fetchRegister.fulfilled.type]: (state, action) => {
-      state.status = "loaded";
+      state.status = "Loaded";
       state.data = action.payload;
     },
     [fetchRegister.rejected.type]: (state) => {
-      state.status = "error";
+      state.status = "Error";
       state.data = null;
     },
   },

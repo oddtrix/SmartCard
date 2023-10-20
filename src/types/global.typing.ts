@@ -8,6 +8,7 @@ export interface ICard {
 export interface IUserId {
   id: string | null;
 }
+
 export interface ICardId extends IUserId {}
 
 export interface FormData {
@@ -19,6 +20,19 @@ export type UserLoginDTO = {
   email: string;
   password: string;
 };
+
+export type UserSignInDTO = {
+  name: string;
+  surname: string;
+  username: string;
+  email: string;
+  password: string;
+};
+
+export type CardDTO = {
+  word: string;
+  translation: string;
+}
 
 export interface DecodedToken {
   [key: string]: string;

@@ -1,19 +1,43 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
-import { ICard, ICardId, IUserId } from "../../types/global.typing";
+import { CardDTO, ICard, ICardId, IUserId } from "../../types/global.typing";
 
 export const fetchCards = createAsyncThunk(
   "cards/fetchCards",
   async (userId: IUserId) => {
-    const { data } = await axios.get(`/Domain/Get/${userId.id}`);
+    const token = window.localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    const { data } = await axios.get(`/Domain/Get/${userId.id}`, { headers });  
+    return data;
+  }
+);
+
+export const fetchCreateCard = createAsyncThunk(
+  "cards/fetchCreateCard",
+  async (card: CardDTO) => {
+    const token = window.localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    const { data } = await axios.post(`/Domain/Create`, { word: card.word, translation: card.translation }, {headers});
     return data;
   }
 );
 
 export const fetchDeleteCard = createAsyncThunk(
   "cards/fetchDeleteCard",
-  async (cardId: ICardId) => {
-    await axios.delete(`/Domain/Delete/guid/1231231`, { data: { id: cardId } });
+  async (cardId: string) => {
+    const token = window.localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    const data = {
+      id: cardId
+    }
+    const response = await axios.delete(`/Domain/Delete`,  { headers, data });
+    return response;
   }
 );
 
@@ -65,9 +89,14 @@ const cardsSlice = createSlice({
       action: PayloadAction<ICard>
     ) => {
       state.cards.items = state.cards.items.filter(
-        (card: ICard) => card.id !== action.payload.id
+        (card) => card.id !== action.payload.id
       );
     },
+
+    // [fetchDeleteCard.rejected.type]: (state: CardsState) => {
+    //   state.cards.items = state.cards.items
+    //   state.cards.status = "Error";
+    // },
 
     [fetchEditCards.pending.type]: (state: CardsState) => {
       state.cards.items = [];

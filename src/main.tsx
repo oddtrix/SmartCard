@@ -11,9 +11,9 @@ import {
 import "./index.css";
 
 import Register from "./components/authentication/Register.tsx";
-import SignIn from "./components/authentication/SignIn.tsx";
 import Navbar from "./components/navbar/Navbar.tsx";
-import Dictionary from "./components/dictionary/Dictionart.tsx";
+import Dictionary from "./components/dictionary/Dictionary.tsx";
+import LogIn from "./components/authentication/LogIn.tsx";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +22,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/signin",
-    element: <SignIn />,
+    element: <LogIn />,
+  },
+  {
+    path: "/login",
+    element: <LogIn />,
   },
   {
     path: "/register",
