@@ -142,7 +142,7 @@ const Navbar = () => {
                 >
                 <span
                   onClick={onClickLogOut}
-                  className="relative text-white px-5 py-2.5 transition-all ease-in duration-75 border border-cyan-500 rounded-md group-hover:bg-opacity-0"                
+                  className="relative text-white px-5 py-2.5 transition-all ease-in duration-75 border border-cyan-500 rounded-md group-hover:bg-opacity-0 hover:bg-cyan-100 hover:text-black"                
                   >
                   Вийти
                 </span>
@@ -153,7 +153,7 @@ const Navbar = () => {
               to="/login"
               className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg "
             >
-              <span className="relative text-white px-5 py-2.5 transition-all ease-in duration-75 border border-cyan-500 rounded-md group-hover:bg-opacity-0">
+              <span className="relative text-white px-5 py-2.5 transition-all ease-in duration-75 border border-cyan-500 rounded-md group-hover:bg-opacity-0 hover:bg-cyan-100 hover:text-black">
                 Увійти
               </span>
             </Link>

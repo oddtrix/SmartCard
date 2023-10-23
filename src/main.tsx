@@ -14,6 +14,11 @@ import Register from "./components/authentication/Register.tsx";
 import Navbar from "./components/navbar/Navbar.tsx";
 import Dictionary from "./components/dictionary/Dictionary.tsx";
 import LogIn from "./components/authentication/LogIn.tsx";
+import Exercises from "./components/practice/Exercises.tsx";
+import FirstStep from "./components/practice/FirstStep.tsx";
+import SecondStep from "./components/practice/SecondStep.tsx";
+import ThirdStep from "./components/practice/ThirdStep.tsx";
+import FourthStep from "./components/practice/FourthStep.tsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +43,51 @@ const router = createBrowserRouter([
       <>
         <Navbar />
         <Dictionary />
+      </>
+    ),
+  },
+  {
+    path: "/practice",
+    element: (
+      <>
+        <Navbar />
+        <Exercises />
+      </>
+    ),
+  },
+  {
+    path: "/practice/first-step",
+    element: (
+      <>
+        <Navbar />
+        <FirstStep />
+      </>
+    ),
+  },
+  {
+    path: "/practice/second-step",
+    element: (
+      <>
+        <Navbar />
+        <SecondStep />
+      </>
+    ),
+  },
+  {
+    path: "/practice/third-step",
+    element: (
+      <>
+        <Navbar />
+        <ThirdStep />
+      </>
+    ),
+  },
+  {
+    path: "/practice/fourth-step",
+    element: (
+      <>
+        <Navbar />
+        <FourthStep />
       </>
     ),
   },

@@ -5,11 +5,12 @@ import { Link, Navigate } from "react-router-dom";
 import httpModule from "../../helpers/http.module";
 import { fetchAuth, selectorIsAuth } from "../../redux/slices/auth";
 import { UserLoginDTO } from "../../types/global.typing";
+import { TailSpin } from "react-loader-spinner";
 
 const SignIn = () => {
   const isAuth = useAppSelector(selectorIsAuth);
   const dispatch = useAppDispatch();
-
+  const cards = useAppSelector((state) => state.cards.cards);
   const [showPassword, setShowPassword] = React.useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -39,8 +40,10 @@ const SignIn = () => {
     }
   };
 
-  if (isAuth) {
-    return <Navigate to="/dictionary" />;
+  const checkAuth = () => {
+    if (isAuth) {
+      return <Navigate to="/dictionary" />;
+    }
   }
   return (
     <div className="m-auto mt-28 max-w-sm p-4 border-2 border-cyan-500 rounded-lg shadow sm:p-6 md:p-8">
@@ -128,6 +131,19 @@ const SignIn = () => {
           value="Увійти"
           className="text-white font-medium rounded-lg text-base px-5 py-2.5 text-center border border-cyan-500 hover:cursor-pointer hover:bg-cyan-100 hover:text-black "
         ></input>
+        
+        {cards.status === "Loading" ? checkAuth() : (
+        <div className="flex justify-center mt-28">
+          <TailSpin
+            height="60"
+            width="60"
+            color="#51E5FF"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            visible={true}
+          />
+        </div>
+      )}
         <div className="text-sm font-medium flex content-center justify-center items-center text-gray-500 dark:text-gray-50">
           <p className="mr-2">Ще не зареєстровані? </p>
           <Link
