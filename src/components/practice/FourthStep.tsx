@@ -42,7 +42,7 @@ const FourthStep = () => {
       dispatch(encLearningRate(ansop));
       setLearnedWords([
         ...learnedWords,
-        [ansop.questionWord, <span className="text-green-400">+2%</span>],
+        [ansop.questionWord, <span className="text-green-400">+1%</span>],
       ]);
       if (answer !== "") {
         document.getElementById("inp_answ").value = "";

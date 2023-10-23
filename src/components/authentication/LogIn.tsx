@@ -46,7 +46,7 @@ const SignIn = () => {
   return (
     <div className="m-auto mt-28 max-w-sm p-4 border-2 border-slate-500 rounded-lg shadow sm:p-6 md:p-8">
       <form onSubmit={handleSubmit(submitForm)} className="space-y-6">
-        <h5 className="text-xl font-medium text-gray-900 dark:text-white">
+        <h5 className="text-xl font-medium text-gray-900 ">
           Увійти в аккаунт
           <span className="ml-2 text-transparent bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-500 text-xl">
             SmartCard
@@ -55,7 +55,7 @@ const SignIn = () => {
         <div>
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             Пошта
           </label>
@@ -73,7 +73,7 @@ const SignIn = () => {
         <div>
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             Пароль
           </label>
@@ -149,7 +149,7 @@ const SignIn = () => {
         )}
         {userStatus === Loading.Loaded ? <Navigate to="/dictionary" /> : ""}
 
-        <div className="text-sm font-medium flex content-center justify-center items-center text-gray-500 dark:text-gray-50">
+        <div className="text-sm font-medium flex content-center justify-center items-center text-gray-500 ">
           <p className="mr-2">Ще не зареєстровані? </p>
           <Link
             to="/register"

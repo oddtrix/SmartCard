@@ -44,7 +44,7 @@ const Register = () => {
   return (
     <div className="m-auto mt-16 max-w-xl p-4 border-2 border-slate-500 rounded-lg shadow sm:p-6 md:p-8 ">
       <form className="space-y-6" onSubmit={handleSubmit(submitForm)}>
-        <h1 className="text-xl font-medium text-gray-900 dark:text-white">
+        <h1 className="text-xl font-medium text-gray-900 ">
           Створити аккаунт
           <span className="ml-2 text-transparent bg-clip-text bg-gradient-to-r to-emerald-500 from-sky-500 text-xl">
             SmartCard
@@ -54,7 +54,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="text"
-              className="block w-60 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block w-60 mb-2 text-sm font-medium text-gray-900 "
             >
               Ім'я
             </label>
@@ -70,7 +70,7 @@ const Register = () => {
           <div>
             <label
               htmlFor="text"
-              className="block w-60 mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block w-60 mb-2 text-sm font-medium text-gray-900 "
             >
               Прізвище
             </label>
@@ -88,7 +88,7 @@ const Register = () => {
         <div>
           <label
             htmlFor="text"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             Ваш нік
           </label>
@@ -105,7 +105,7 @@ const Register = () => {
         <div>
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             Ваша пошта
           </label>
@@ -122,7 +122,7 @@ const Register = () => {
         <div>
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900 "
           >
             Пароль
           </label>
@@ -155,7 +155,7 @@ const Register = () => {
           value="Зареєструватися"
           className="text-black font-medium rounded-lg text-base px-5 py-2.5 text-center border border-slate-500 hover:cursor-pointer hover:bg-slate-200"
         ></input>
-        <div className="text-sm font-medium flex justify-center text-gray-500 dark:text-gray-50">
+        <div className="text-sm font-medium flex justify-center text-gray-500 ">
           <p className="mr-2">Вже є аккаунт?</p>
           <Link
             to="/login"

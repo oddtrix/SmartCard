@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Main = () => {
   return (
-    <div className="max-w-screen-xl flex flex-col pb-20 m-auto items-center justify-center dark:text-white">
+    <div className="max-w-screen-xl flex flex-col pb-20 m-auto items-center justify-center ">
       <div className="m-auto w-3/4 mt-12 max-md:mt-0">
         <h1 className="mb-4 text-5xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
           <span className="max-xl:text-6xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 text-8xl">
@@ -14,7 +14,7 @@ const Main = () => {
             Твій особистий словник
           </span>
         </h2>
-        <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-white">
+        <p className="text-lg font-normal text-gray-500 lg:text-xl ">
           Вчи англійську мову граючись
         </p>
       </div>

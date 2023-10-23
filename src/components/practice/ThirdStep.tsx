@@ -37,6 +37,8 @@ const ThirdStep = () => {
 
   const handleAnswerOptionClick = (ansop) => {
     let answer = document.getElementById("inp_answ").value;
+    console.log(answer)
+    console.log(ansop)
     if (ansop.questionWord === answer) {
       dispatch(encLearningRate(ansop));
       setLearnedWords([

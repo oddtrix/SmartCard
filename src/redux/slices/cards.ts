@@ -59,7 +59,7 @@ export const encLearningRate = createAsyncThunk(
     const headers = {
       Authorization: `Bearer ${token}`
     }
-    const { data } = await axios.put(`/Domain/IncreaseLearningRate`, { id: ansop.id }, { headers });
+    const { data } = await axios.put(`/Domain/IncreaseLearningRate`, { id: ansop.questionWord_id }, { headers });
     return data;
   }
 );
@@ -70,7 +70,7 @@ export const decLearningRate = createAsyncThunk(
     const headers = {
       Authorization: `Bearer ${token}`
     }
-    const { data } = await axios.put(`/Domain/DecreaseLearningRate`, { id: ansop.id }, { headers });
+    const { data } = await axios.put(`/Domain/DecreaseLearningRate`, { id: ansop.questionWord_id }, { headers });
     return data;
   }
 );

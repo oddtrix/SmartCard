@@ -86,7 +86,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/"
-              className="block py-2 pl-3 pr-4 text-gray-900 rounded "
+              className="block py-2 pl-3 pr-4 rounded text-black"
             >
               Головна
             </Link>
@@ -119,7 +119,7 @@ const Navbar = () => {
       <div className="container flex flex-wrap items-center justify-between mx-auto max-md:hidden">
         <Link to="/" className="flex items-center">
           {/* <img src={icon} className="h-10 mr-3 sm:h-10" alt="SmartCard Logo" /> */}
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-2xl font-semibold whitespace-nowrap ">
             SmartCard
           </span>
         </Link>
@@ -165,7 +165,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/"
-                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
               >
                 Головна
               </Link>
@@ -173,7 +173,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/dictionary"
-                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
               >
                 Словник
               </Link>
@@ -181,7 +181,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/practice"
-                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
               >
                 Вправи
               </Link>

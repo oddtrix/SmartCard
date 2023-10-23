@@ -80,14 +80,14 @@ const SecondStep = () => {
         <div className="block p-6 border border-gray-200 rounded-lg shadow w-2/4 max-md:w-full m-auto dark:bg-navbar">
           {end ? (
             <div className="w-3/5">
-              <h5 className="mb-2 text-2xl tracking-tight text-gray-900 dark:text-white">
+              <h5 className="mb-2 text-2xl tracking-tight text-gray-900 ">
                 Ваш результат:
               </h5>
               <div className="flex justify-between">
                 <div className="flex flex-col">
                   <ul>
                     {learnedWords.map((el) => (
-                      <li key={v4()} className="text-xl dark:text-white">
+                      <li key={v4()} className="text-xl ">
                         {el[0]}
                       </li>
                     ))}
@@ -112,17 +112,17 @@ const SecondStep = () => {
           ) : (
             <div className="dark:bg-navbar">
               <div className="flex justify-between flex-row-reverse">
-                <h5 className="mb-2 text-3xl max-md:text-xl text-right  tracking-tight text-gray-900 dark:text-white">
+                <h5 className="mb-2 text-3xl max-md:text-xl text-right  tracking-tight text-gray-900 ">
                   {currentQuestion + 1} / {quiz.length}
                 </h5>
-                <h5 className="mb-2 text-2xl max-md:text-xl tracking-tight text-gray-900 dark:text-white">
+                <h5 className="mb-2 text-2xl max-md:text-xl tracking-tight text-gray-900 ">
                   Обери правильний переклад:
                 </h5>
               </div>
               <hr className="w-full h-px my-5 bg-gray-200 border-0 dark:bg-white-700"></hr>
               <div className="flex justify-between max-lg:flex-col">
                 <div className="flex flex-col items-center">
-                  <h3 className="mt-9 max-lg:mt-0 max-lg:mb-4 text-xl dark:text-white">
+                  <h3 className="mt-9 max-lg:mt-0 max-lg:mb-4 text-xl ">
                     Як перекласти слово{" "}
                     <span className="font-bold">
                       {quiz[currentQuestion].questionWord}
