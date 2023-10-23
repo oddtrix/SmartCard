@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
-import { CardDTO, ICard, ICardId, IUserId } from "../../types/global.typing";
+import { CardDTO, ICard, ICardId, ICardUpdate, IUserId } from "../../types/global.typing";
 
 export const fetchCards = createAsyncThunk(
   "cards/fetchCards",
@@ -36,15 +36,41 @@ export const fetchDeleteCard = createAsyncThunk(
     const data = {
       id: cardId
     }
-    const response = await axios.delete(`/Domain/Delete`,  { headers, data });
-    return response;
+    await axios.delete(`/Domain/Delete`,  { headers, data });
   }
 );
 
-export const fetchEditCards = createAsyncThunk(
-  "cards/fetchEditCards",
-  async (id) => {
-    const { data } = await axios.put(`/cards/${id}`);
+export const fetchEditCard = createAsyncThunk(
+  "cards/fetchEditCard",
+  async (card: ICardUpdate) => {
+    const token = window.localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    const { data } = await axios.put(`/Domain/Update`, { id: card.id, word : card.word, translation: card.translation}, { headers });
+    return data;
+  }
+);
+
+export const encLearningRate = createAsyncThunk(
+  "cards/encLearningRate",
+  async (ansop) => {
+    const token = window.localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    const { data } = await axios.put(`/Domain/IncreaseLearningRate`, { id: ansop.id }, { headers });
+    return data;
+  }
+);
+export const decLearningRate = createAsyncThunk(
+  "cards/decLearningRate",
+  async (ansop) => {
+    const token = window.localStorage.getItem("token")
+    const headers = {
+      Authorization: `Bearer ${token}`
+    }
+    const { data } = await axios.put(`/Domain/DecreaseLearningRate`, { id: ansop.id }, { headers });
     return data;
   }
 );
@@ -84,12 +110,16 @@ const cardsSlice = createSlice({
       state.cards.status = "Error";
     },
 
-    [fetchDeleteCard.pending.type]: (
+    [fetchCreateCard.fulfilled.type]: (state: CardsState, action: PayloadAction<ICard>) => {
+      state.cards.items.push(action.payload)
+    },
+
+    [fetchDeleteCard.fulfilled.type]: (
       state: CardsState,
-      action: PayloadAction<ICard>
+      action
     ) => {
       state.cards.items = state.cards.items.filter(
-        (card) => card.id !== action.payload.id
+        (card) => card.id !== action.meta.arg
       );
     },
 
@@ -98,18 +128,55 @@ const cardsSlice = createSlice({
     //   state.cards.status = "Error";
     // },
 
-    [fetchEditCards.pending.type]: (state: CardsState) => {
-      state.cards.items = [];
-      state.cards.status = "Loading";
-    },
-    [fetchEditCards.fulfilled.type]: (
-      state: CardsState,
-      action: PayloadAction<ICard[], string>
-    ) => {
-      state.cards.items = action.payload;
+    [decLearningRate.fulfilled.type]: (state: CardsState, action: PayloadAction<ICard>) => {
+      state.cards.items = state.cards.items.map(card => {
+        if (card.id === action.payload.id) {
+          return {
+            ...card,
+            learningRate: action.payload.learningRate
+          };
+        } else {
+          return card;
+        }
+      });
       state.cards.status = "Loaded";
     },
-    [fetchEditCards.rejected.type]: (state: CardsState) => {
+
+    [encLearningRate.fulfilled.type]: (state: CardsState, action: PayloadAction<ICard>) => {
+      state.cards.items = state.cards.items.map(card => {
+        if (card.id === action.payload.id) {
+          return {
+            ...card,
+            learningRate: action.payload.learningRate
+          };
+        } else {
+          return card;
+        }
+      });
+      state.cards.status = "Loaded";
+    },
+
+    [fetchEditCard.pending.type]: (state: CardsState) => {
+      state.cards.status = "Loading";
+    },
+    [fetchEditCard.fulfilled.type]: (
+      state: CardsState,
+      action: PayloadAction<ICard>
+    ) => {
+      state.cards.items = state.cards.items.map(card => {
+        if (card.id === action.payload.id) {
+          return {
+            ...card,
+            word: action.payload.word,
+            translation: action.payload.translation,
+          };
+        } else {
+          return card;
+        }
+      });
+      state.cards.status = "Loaded";
+    },
+    [fetchEditCard.rejected.type]: (state: CardsState) => {
       state.cards.items = [];
       state.cards.status = "Error";
     },

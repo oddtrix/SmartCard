@@ -2,7 +2,6 @@ import React from "react";
 import { fetchCards } from "../../redux/slices/cards";
 import CardContainer from "./CardContainer";
 import jwt_decode from "jwt-decode";
-import { selectorIsAuth } from "../../redux/slices/auth";
 import { Navigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -17,10 +16,6 @@ const Dictionary = () => {
   const idClaim =
     "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
   const userId: ICardId = decoded ? { id: decoded[idClaim] } : { id: null };
-
-  const updateInfo = () => {
-    dispatch(fetchCards(userId));
-  };
 
   React.useEffect(() => {
     dispatch(fetchCards(userId));

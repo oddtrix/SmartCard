@@ -1,17 +1,17 @@
 import { SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { CardDTO } from "../../types/global.typing";
+import { ICardUpdate } from "../../types/global.typing";
 import { useAppDispatch } from "../../redux/hooks";
-import { fetchCreateCard } from "../../redux/slices/cards";
+import { fetchEditCard } from "../../redux/slices/cards";
 
-const AddCard = (props: { addword: string , setAddWord: SetStateAction<boolean> }) => {
+const EditCard = (props: { editCard: string , setEdit: SetStateAction<boolean>, updateCardId: string, updateCardWord: string, updateCardTranslate: string }) => {
   const dispatch = useAppDispatch();  
   const handleClick = () =>{
-        props.setAddWord(false)
+        props.setEdit(false)
     }
 
-    const submitForm = async (data: CardDTO) => {
-        const result = await dispatch(fetchCreateCard(data))
+    const submitForm = async (data: ICardUpdate) => {
+        const result = await dispatch(fetchEditCard(data))
         if (!result.payload){
           return alert("Помилка")
         }
@@ -24,10 +24,11 @@ const AddCard = (props: { addword: string , setAddWord: SetStateAction<boolean> 
       // formState: { errors, isValid },
     } = useForm({
       defaultValues: {
-        word: "",
-        translation: "",
+        id: props.updateCardId,
+        word: props.updateCardWord,
+        translation: props.updateCardTranslate,
       },
-      mode: "onChange",
+      mode: "onSubmit",
     });
   return (
     <div className="">
@@ -52,8 +53,8 @@ const AddCard = (props: { addword: string , setAddWord: SetStateAction<boolean> 
 
           <input
             type="submit"
-            value="Додати"
-            className="focus:outline-none cursor-pointer text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            value="Оновити"
+            className="focus:outline-none cursor-pointer text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
           />
             
           <button
@@ -69,4 +70,4 @@ const AddCard = (props: { addword: string , setAddWord: SetStateAction<boolean> 
   );
 };
 
-export default AddCard;
+export default EditCard;

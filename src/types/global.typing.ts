@@ -5,6 +5,12 @@ export interface ICard {
   learningRate: number;
 }
 
+export interface ICardUpdate {
+  id: string;
+  word: string;
+  translation: string;
+}
+
 export interface IUserId {
   id: string | null;
 }
