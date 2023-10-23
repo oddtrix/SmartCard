@@ -32,12 +32,19 @@ type User = {
 
 type UserState = {
   data: User | null;
-  status: string;
+  status: Loading;
 };
+
+export enum Loading {
+  "Idle",
+  "Loading",
+  "Loaded",
+  "Error",
+}
 
 const initialState: UserState = {
   data: null,
-  status: "Loading",
+  status: Loading.Idle,
 };
 
 const authSlice = createSlice({
@@ -50,43 +57,44 @@ const authSlice = createSlice({
   },
   extraReducers: {
     [fetchAuth.pending.type]: (state) => {
-      state.status = "Loading";
+      state.status = Loading.Loading;
       state.data = null;
     },
     [fetchAuth.fulfilled.type]: (state, action) => {
-      state.status = "Loaded";
+      state.status = Loading.Loaded;
       state.data = action.payload;
     },
     [fetchAuth.rejected.type]: (state) => {
-      state.status = "Error";
+      state.status = Loading.Error;
       state.data = null;
     },
     [fetchAuthMe.pending.type]: (state) => {
-      state.status = "Loading";
+      state.status = Loading.Loading;
       state.data = null;
     },
     [fetchAuthMe.fulfilled.type]: (state, action) => {
-      state.status = "Loaded";
+      state.status = Loading.Loaded;
       state.data = action.payload;
     },
     [fetchAuthMe.rejected.type]: (state) => {
-      state.status = "Error";
+      state.status = Loading.Error;
       state.data = null;
     },
     [fetchRegister.pending.type]: (state) => {
-      state.status = "Loading";
+      state.status = Loading.Loading;
       state.data = null;
     },
     [fetchRegister.fulfilled.type]: (state, action) => {
-      state.status = "Loaded";
+      state.status = Loading.Loaded;
       state.data = action.payload;
     },
     [fetchRegister.rejected.type]: (state) => {
-      state.status = "Error";
+      state.status = Loading.Error;
       state.data = null;
     },
   },
 });
-export const selectorIsAuth = (state: RootState) => Boolean(state.auth.data);
+export const selectorIsAuth = () =>
+  window.localStorage.getItem("token") === null ? false : true;
 export const authReducer = authSlice.reducer;
 export const { logout } = authSlice.actions;

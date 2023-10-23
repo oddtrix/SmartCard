@@ -1,111 +1,159 @@
-import React, { useState } from 'react';
-import {decLearningRate, encLearningRate, fetchCards} from "../../redux/slices/cards";
-import jwt_decode from "jwt-decode";
-import {v4} from 'uuid'
-import { DecodedToken, ICardId } from '../../types/global.typing';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import {shuffle} from '../../helpers/additionFunction';
+import React, { useState } from "react";
+import {
+  decLearningRate,
+  encLearningRate,
+  fetchCards,
+} from "../../redux/slices/cards";
+import { v4 } from "uuid";
+import { ICardId } from "../../types/global.typing";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getUserId, shuffle } from "../../helpers/additionFunction";
 
 const SecondStep = () => {
-    const dispatch = useAppDispatch()
-    const cards = useAppSelector(state => state.cards.cards.items)
+  const dispatch = useAppDispatch();
+  const cards = useAppSelector((state) => state.cards.cards.items);
 
-    const token = window.localStorage.getItem("token");
-    const decoded: DecodedToken | null = token ? jwt_decode(token) : null;
-    const idClaim =
-        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
-    const userId: ICardId = decoded ? { id: decoded[idClaim] } : { id: null };
+  const userId: ICardId = getUserId();
 
-    const [currentQuestion, setCurrentQuestion] = useState(0)
-    const [end, setEnd] = useState(false)
-    const [learnedWords, setLearnedWords] = useState([])
-    const quiz = [...cards].sort((a,b) => a.learningRate - b.learningRate).slice(0,5).map(card => {
-        return {
-            questionWord: card.word,
-            answerOptions: shuffle([...cards].sort((a,b) => a.learningRate - b.learningRate).slice(0,5).map(el => {
-                return {
-                    id: el.id,
-                    questionWord_id: card.id,
-                    questionWord_lr: card.learningRate,
-                    learningRate: el.learningRate,
-                    answerWord: el.translation,
-                    originalWord: card.word,
-                    isCorrect: card.id === el.id ? true: false,
-                }
-            }))
-        }
-    })
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [end, setEnd] = useState(false);
+  const [learnedWords, setLearnedWords] = useState([]);
+  const quiz = [...cards]
+    .sort((a, b) => a.learningRate - b.learningRate)
+    .slice(0, 5)
+    .map((card) => {
+      return {
+        questionWord: card.word,
+        answerOptions: shuffle(
+          [...cards]
+            .sort((a, b) => a.learningRate - b.learningRate)
+            .slice(0, 5)
+            .map((el) => {
+              return {
+                id: el.id,
+                questionWord_id: card.id,
+                questionWord_lr: card.learningRate,
+                learningRate: el.learningRate,
+                answerWord: el.translation,
+                originalWord: card.word,
+                isCorrect: card.id === el.id ? true : false,
+              };
+            })
+        ),
+      };
+    });
 
-    const handleAnswerOptionClick = (ansop) =>{
-        if (ansop.isCorrect){
-            dispatch(encLearningRate(ansop))
-            setLearnedWords([...learnedWords, [ansop.originalWord, <span className='text-green-400'>+1%</span>]])
-        } else{
-            dispatch(decLearningRate(ansop))
-            setLearnedWords([...learnedWords, [ansop.originalWord, ansop.learningRate === 0 ? '0%' : <span className='text-red-400'>-1%</span>]])
-        }
-        const nextQuestion = currentQuestion + 1
-        if (nextQuestion < quiz.length){
-            setCurrentQuestion(nextQuestion)
-        } else {
-            setEnd(true)
-        }
+  const handleAnswerOptionClick = (ansop) => {
+    if (ansop.isCorrect) {
+      dispatch(encLearningRate(ansop));
+      setLearnedWords([
+        ...learnedWords,
+        [ansop.originalWord, <span className="text-green-400">+1%</span>],
+      ]);
+    } else {
+      dispatch(decLearningRate(ansop));
+      setLearnedWords([
+        ...learnedWords,
+        [
+          ansop.originalWord,
+          ansop.learningRate === 0 ? (
+            "0%"
+          ) : (
+            <span className="text-red-400">-1%</span>
+          ),
+        ],
+      ]);
     }
-    React.useEffect(() => {
-        dispatch(fetchCards(userId))
-    }, [])
-    return (
-        <div className='flex mt-20 justify-between'>
-            {quiz.length > 0 ? <div className="block p-6 border border-gray-200 rounded-lg shadow w-2/4 max-md:w-full m-auto dark:bg-navbar">
-                {end ? <div className='w-3/5'>
-                    <h5 className="mb-2 text-2xl tracking-tight text-gray-900 dark:text-white">
-                        Ваш результат:
-                    </h5>
-                    <div className='flex justify-between'>
-                            <div className='flex flex-col'>
-                                <ul>
-                                    {learnedWords.map(el => (
-                                        <li key={v4()} className='text-xl dark:text-white'>{el[0]}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className='flex flex-col'>
-                                <ul>
-                                    {learnedWords.map(el => (
-                                        <li key={v4()} className='text-xl'>{el[1]}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                </div> : ''}
-                {end ? '' : <div className='dark:bg-navbar'>
-                        <div className='flex justify-between flex-row-reverse'>
-                            <h5 className="mb-2 text-3xl max-md:text-xl text-right  tracking-tight text-gray-900 dark:text-white">
-                                {currentQuestion + 1} / {quiz.length}
-                            </h5>
-                            <h5 className="mb-2 text-2xl max-md:text-xl tracking-tight text-gray-900 dark:text-white">
-                                Обери правильний переклад:
-                            </h5>
-                        </div>
-                        <hr className="w-full h-px my-5 bg-gray-200 border-0 dark:bg-white-700"></hr>
-                        <div className='flex justify-between max-lg:flex-col'>
-                            <div className='flex flex-col items-center'>
-                                <h3 className='mt-9 max-lg:mt-0 max-lg:mb-4 text-xl dark:text-white'>Як перекласти слово <span className='font-bold'>{quiz[currentQuestion].questionWord}</span>?</h3>
-                            </div>
-                            <div className='flex flex-col'>
-                                {quiz.length > 0 ? quiz[currentQuestion].answerOptions.map( ansop => (
-                                    <button key={v4()} type="button" id={ansop.id}
-                                    onClick={() => handleAnswerOptionClick(ansop)}
-                                        className="py-2.5 px-5 mr-2 mb-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-white-800 dark:text-white-400 dark:border-gray-600 dark:hover:text-blue-700">
-                                            {ansop.answerWord}
-                                    </button>
-                                )): ''}
-                            </div>
-                        </div>
-                    </div>}
-            </div> : ''}
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < quiz.length) {
+      setCurrentQuestion(nextQuestion);
+    } else {
+      setEnd(true);
+    }
+  };
+  React.useEffect(() => {
+    dispatch(fetchCards(userId));
+  }, []);
+  return (
+    <div className="flex mt-20 justify-between">
+      {quiz.length > 0 ? (
+        <div className="block p-6 border border-gray-200 rounded-lg shadow w-2/4 max-md:w-full m-auto dark:bg-navbar">
+          {end ? (
+            <div className="w-3/5">
+              <h5 className="mb-2 text-2xl tracking-tight text-gray-900 dark:text-white">
+                Ваш результат:
+              </h5>
+              <div className="flex justify-between">
+                <div className="flex flex-col">
+                  <ul>
+                    {learnedWords.map((el) => (
+                      <li key={v4()} className="text-xl dark:text-white">
+                        {el[0]}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-col">
+                  <ul>
+                    {learnedWords.map((el) => (
+                      <li key={v4()} className="text-xl">
+                        {el[1]}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+          {end ? (
+            ""
+          ) : (
+            <div className="dark:bg-navbar">
+              <div className="flex justify-between flex-row-reverse">
+                <h5 className="mb-2 text-3xl max-md:text-xl text-right  tracking-tight text-gray-900 dark:text-white">
+                  {currentQuestion + 1} / {quiz.length}
+                </h5>
+                <h5 className="mb-2 text-2xl max-md:text-xl tracking-tight text-gray-900 dark:text-white">
+                  Обери правильний переклад:
+                </h5>
+              </div>
+              <hr className="w-full h-px my-5 bg-gray-200 border-0 dark:bg-white-700"></hr>
+              <div className="flex justify-between max-lg:flex-col">
+                <div className="flex flex-col items-center">
+                  <h3 className="mt-9 max-lg:mt-0 max-lg:mb-4 text-xl dark:text-white">
+                    Як перекласти слово{" "}
+                    <span className="font-bold">
+                      {quiz[currentQuestion].questionWord}
+                    </span>
+                    ?
+                  </h3>
+                </div>
+                <div className="flex flex-col">
+                  {quiz.length > 0
+                    ? quiz[currentQuestion].answerOptions.map((ansop) => (
+                        <button
+                          key={v4()}
+                          type="button"
+                          id={ansop.id}
+                          onClick={() => handleAnswerOptionClick(ansop)}
+                          className="py-2.5 px-5 mr-2 mb-2 text-base font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-white-800 dark:text-white-400 dark:border-gray-600 dark:hover:text-blue-700"
+                        >
+                          {ansop.answerWord}
+                        </button>
+                      ))
+                    : ""}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-    );
+      ) : (
+        ""
+      )}
+    </div>
+  );
 };
 
 export default SecondStep;

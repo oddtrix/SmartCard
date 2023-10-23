@@ -1,21 +1,17 @@
 import React from "react";
 import { fetchCards } from "../../redux/slices/cards";
 import CardContainer from "./CardContainer";
-import jwt_decode from "jwt-decode";
 import { Navigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { DecodedToken, ICardId } from "../../types/global.typing";
+import { ICardId } from "../../types/global.typing";
+import { getUserId } from "../../helpers/additionFunction";
 
 const Dictionary = () => {
   const dispatch = useAppDispatch();
   const cards = useAppSelector((state) => state.cards);
 
-  const token = window.localStorage.getItem("token");
-  const decoded: DecodedToken | null = token ? jwt_decode(token) : null;
-  const idClaim =
-    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
-  const userId: ICardId = decoded ? { id: decoded[idClaim] } : { id: null };
+  const userId: ICardId = getUserId();
 
   React.useEffect(() => {
     dispatch(fetchCards(userId));

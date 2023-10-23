@@ -20,7 +20,17 @@ const CardContainer = (props: { myCards: ICard[] }) => {
     <>
       {addWord ? <AddCard addword={addWord} setAddWord={setAddWord} /> : false}
 
-      {editCard ? <EditCard editCard={editCard} setEdit={setEdit} updateCardId={updateCardId} updateCardWord={updateCardWord} updateCardTranslate={updateCardTranslate}/> : false}
+      {editCard ? (
+        <EditCard
+          editCard={editCard}
+          setEdit={setEdit}
+          updateCardId={updateCardId}
+          updateCardWord={updateCardWord}
+          updateCardTranslate={updateCardTranslate}
+        />
+      ) : (
+        false
+      )}
 
       <div className="w-5/6 max-sm:w-full max-md:w-5/6 max-lg:w-full max-xl:w-full m-auto relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
         <table className="w-full text-sm text-left text-gray-500 table-auto">
@@ -29,12 +39,12 @@ const CardContainer = (props: { myCards: ICard[] }) => {
               className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg "
               onClick={addNewWord}
             >
-              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 text-white border-2 border-cyan-500 rounded-md group-hover:bg-opacity-0 hover:bg-cyan-100 hover:text-black">
+              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 text-blakc border border-slate-500 rounded-md group-hover:bg-opacity-0 hover:text-white hover:bg-black ">
                 Додати слово
               </span>
             </button>
           </caption>
-          <thead className="text-xs text-gray-700 uppercase bg-slate-300">
+          <thead className="text-xs text-white uppercase bg-black">
             <tr>
               <th scope="col" className="text-center px-6 py-3">
                 Слово
@@ -58,7 +68,14 @@ const CardContainer = (props: { myCards: ICard[] }) => {
           </thead>
           <tbody>
             {props.myCards.map((card: ICard) => (
-              <CardItem card={card} key={card.id} setEdit={setEdit} setUpdateCard={setUpdateCard} setUpdateCardWord={setUpdateCardWord} setUpdateCardTranslate={setUpdateCardTranslate}/>
+              <CardItem
+                card={card}
+                key={card.id}
+                setEdit={setEdit}
+                setUpdateCard={setUpdateCard}
+                setUpdateCardWord={setUpdateCardWord}
+                setUpdateCardTranslate={setUpdateCardTranslate}
+              />
             ))}
           </tbody>
         </table>
