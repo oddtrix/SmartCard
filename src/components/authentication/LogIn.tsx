@@ -13,7 +13,7 @@ const SignIn = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  console.log(userStatus);
+  
   const {
     register,
     handleSubmit,

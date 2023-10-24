@@ -32,7 +32,7 @@ const CardContainer = (props: { myCards: ICard[] }) => {
         false
       )}
 
-      <div className="w-5/6 max-sm:w-full max-md:w-5/6 max-lg:w-full max-xl:w-full m-auto relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+      <div className="w-5/6 max-sm:w-full max-md:w-full max-lg:w-full max-xl:w-full m-auto relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
         <table className="w-full text-sm text-left text-gray-500 table-auto">
           <caption className="p-2 text-lg font-semibold text-left text-gray-900">
             <button
