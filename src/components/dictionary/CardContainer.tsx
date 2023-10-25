@@ -3,8 +3,16 @@ import AddCard from "../card/AddCard";
 import EditCard from "../card/EditCard";
 import { ICard } from "../../types/global.typing";
 import CardItem from "./CardItem";
+import Pagination from "./Pagination";
+import { useAppSelector } from "../../redux/hooks";
 
-const CardContainer = (props: { myCards: ICard[] }) => {
+const CardContainer = () => {
+  const pageSize = 10;
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const myCards = useAppSelector((state) => state.cards.cards.items);
+  const totalPages = Math.ceil(myCards.length / pageSize);
+
   const [addWord, setAddWord] = useState(false);
   const [editCard, setEdit] = useState(false);
 
@@ -67,19 +75,30 @@ const CardContainer = (props: { myCards: ICard[] }) => {
             </tr>
           </thead>
           <tbody>
-            {props.myCards.map((card: ICard) => (
-              <CardItem
-                card={card}
-                key={card.id}
-                setEdit={setEdit}
-                setUpdateCard={setUpdateCard}
-                setUpdateCardWord={setUpdateCardWord}
-                setUpdateCardTranslate={setUpdateCardTranslate}
-              />
-            ))}
+            {myCards
+              .slice(
+                (currentPage - 1) * pageSize,
+                (currentPage - 1) * pageSize + pageSize
+              )
+              .map((card: ICard) => (
+                <CardItem
+                  card={card}
+                  key={card.id}
+                  setEdit={setEdit}
+                  setUpdateCard={setUpdateCard}
+                  setUpdateCardWord={setUpdateCardWord}
+                  setUpdateCardTranslate={setUpdateCardTranslate}
+                />
+              ))}
           </tbody>
         </table>
       </div>
+      {console.log(currentPage)}
+      <Pagination
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        totalPages={totalPages}
+      />
     </>
   );
 };

@@ -16,20 +16,24 @@ const Navbar = () => {
   };
 
   const switchTheme = () => {
-    setTheme( theme === 'dark' ? 'light' : 'dark')
-    console.log("THEEME")
-  }
+    setTheme(theme === "dark" ? "light" : "dark");
+    console.log("THEEME");
+  };
 
-  const toggle = (element: string) =>{
-    const el = document.getElementById(element)
-    el?.classList.contains('hidden') ? el.classList.remove('hidden') : el?.classList.add('hidden')
-  }
+  const toggle = (element: string) => {
+    const el = document.getElementById(element);
+    el?.classList.contains("hidden")
+      ? el.classList.remove("hidden")
+      : el?.classList.add("hidden");
+  };
   React.useEffect(() => {
-    theme === 'dark' ?  document.getElementById("root").classList.add('dark'): document.getElementById("root").classList.remove('dark')
-  },[theme])
+    theme === "dark"
+      ? document.getElementById("root").classList.add("dark")
+      : document.getElementById("root").classList.remove("dark");
+  }, [theme]);
 
   return (
-    <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 rounded sticky z-10 top-0">
+    <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 rounded-xl sticky z-10 top-0 bg-white shadow-md ">
       <div className="flex justify-between md:hidden">
         <Link to="/" className="flex items-center">
           {/* <img src={icon} className="h-10 mr-3 sm:h-10" alt="SmartCard Logo" /> */}
@@ -67,10 +71,7 @@ const Navbar = () => {
       >
         <ul className=" max-md:h-screen font-medium flex items-center flex-col p-4 md:p-0 mt-4 border md:hidden rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 ">
           <li>
-            <Link
-              to="/"
-              className="block py-2 pl-3 pr-4 rounded text-black"
-            >
+            <Link to="/" className="block py-2 pl-3 pr-4 rounded text-black">
               Головна
             </Link>
           </li>
@@ -107,7 +108,6 @@ const Navbar = () => {
           </span>
         </Link>
         <div className="flex items-center md:order-2">
-          
           {selectorIsAuth() ? (
             <div className="flex flex-row items-center">
               <button onClick={switchTheme} className="flex mr-4">

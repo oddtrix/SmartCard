@@ -1,15 +1,24 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
-import { CardDTO, ICard, ICardId, ICardUpdate, IUserId } from "../../types/global.typing";
+import {
+  CardDTO,
+  ICard,
+  ICardUpdate,
+  IUserId,
+} from "../../types/global.typing";
+import { Loading } from "./auth";
 
 export const fetchCards = createAsyncThunk(
   "cards/fetchCards",
-  async (userId: IUserId) => {
-    const token = window.localStorage.getItem("token")
+  async ({ userId, currentPage }: { userId: IUserId; currentPage: number }) => {
+    const token = window.localStorage.getItem("token");
     const headers = {
-      Authorization: `Bearer ${token}`
-    }
-    const { data } = await axios.get(`/Domain/Get/${userId.id}`, { headers });  
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.get(
+      `/Domain/Get/${userId.id}?CurrentPage=${currentPage}`,
+      { headers }
+    );
     return data;
   }
 );
@@ -17,11 +26,15 @@ export const fetchCards = createAsyncThunk(
 export const fetchCreateCard = createAsyncThunk(
   "cards/fetchCreateCard",
   async (card: CardDTO) => {
-    const token = window.localStorage.getItem("token")
+    const token = window.localStorage.getItem("token");
     const headers = {
-      Authorization: `Bearer ${token}`
-    }
-    const { data } = await axios.post(`/Domain/Create`, { word: card.word, translation: card.translation }, {headers});
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.post(
+      `/Domain/Create`,
+      { word: card.word, translation: card.translation },
+      { headers }
+    );
     return data;
   }
 );
@@ -29,25 +42,29 @@ export const fetchCreateCard = createAsyncThunk(
 export const fetchDeleteCard = createAsyncThunk(
   "cards/fetchDeleteCard",
   async (cardId: string) => {
-    const token = window.localStorage.getItem("token")
+    const token = window.localStorage.getItem("token");
     const headers = {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    };
     const data = {
-      id: cardId
-    }
-    await axios.delete(`/Domain/Delete`,  { headers, data });
+      id: cardId,
+    };
+    await axios.delete(`/Domain/Delete`, { headers, data });
   }
 );
 
 export const fetchEditCard = createAsyncThunk(
   "cards/fetchEditCard",
   async (card: ICardUpdate) => {
-    const token = window.localStorage.getItem("token")
+    const token = window.localStorage.getItem("token");
     const headers = {
-      Authorization: `Bearer ${token}`
-    }
-    const { data } = await axios.put(`/Domain/Update`, { id: card.id, word : card.word, translation: card.translation}, { headers });
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.put(
+      `/Domain/Update`,
+      { id: card.id, word: card.word, translation: card.translation },
+      { headers }
+    );
     return data;
   }
 );
@@ -55,22 +72,30 @@ export const fetchEditCard = createAsyncThunk(
 export const encLearningRate = createAsyncThunk(
   "cards/encLearningRate",
   async (ansop) => {
-    const token = window.localStorage.getItem("token")
+    const token = window.localStorage.getItem("token");
     const headers = {
-      Authorization: `Bearer ${token}`
-    }
-    const { data } = await axios.put(`/Domain/IncreaseLearningRate`, { id: ansop.questionWord_id }, { headers });
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.put(
+      `/Domain/IncreaseLearningRate`,
+      { id: ansop.questionWord_id },
+      { headers }
+    );
     return data;
   }
 );
 export const decLearningRate = createAsyncThunk(
   "cards/decLearningRate",
   async (ansop) => {
-    const token = window.localStorage.getItem("token")
+    const token = window.localStorage.getItem("token");
     const headers = {
-      Authorization: `Bearer ${token}`
-    }
-    const { data } = await axios.put(`/Domain/DecreaseLearningRate`, { id: ansop.questionWord_id }, { headers });
+      Authorization: `Bearer ${token}`,
+    };
+    const { data } = await axios.put(
+      `/Domain/DecreaseLearningRate`,
+      { id: ansop.questionWord_id },
+      { headers }
+    );
     return data;
   }
 );
@@ -78,14 +103,14 @@ export const decLearningRate = createAsyncThunk(
 type CardsState = {
   cards: {
     items: ICard[];
-    status: string;
+    status: Loading;
   };
 };
 
 const initialState: CardsState = {
   cards: {
     items: [],
-    status: "Loading",
+    status: Loading.Loading,
   },
 };
 
@@ -96,28 +121,28 @@ const cardsSlice = createSlice({
   extraReducers: {
     [fetchCards.pending.type]: (state: CardsState) => {
       state.cards.items = [];
-      state.cards.status = "Loading";
+      state.cards.status = Loading.Loading;
     },
     [fetchCards.fulfilled.type]: (
       state: CardsState,
       action: PayloadAction<ICard[], string>
     ) => {
       state.cards.items = action.payload;
-      state.cards.status = "Loaded";
+      state.cards.status = Loading.Loaded;
     },
     [fetchCards.rejected.type]: (state: CardsState) => {
       state.cards.items = [];
-      state.cards.status = "Error";
+      state.cards.status = Loading.Error;
     },
 
-    [fetchCreateCard.fulfilled.type]: (state: CardsState, action: PayloadAction<ICard>) => {
-      state.cards.items.push(action.payload)
-    },
-
-    [fetchDeleteCard.fulfilled.type]: (
+    [fetchCreateCard.fulfilled.type]: (
       state: CardsState,
-      action
+      action: PayloadAction<ICard>
     ) => {
+      state.cards.items.push(action.payload);
+    },
+
+    [fetchDeleteCard.fulfilled.type]: (state: CardsState, action) => {
       state.cards.items = state.cards.items.filter(
         (card) => card.id !== action.meta.arg
       );
@@ -128,42 +153,48 @@ const cardsSlice = createSlice({
     //   state.cards.status = "Error";
     // },
 
-    [decLearningRate.fulfilled.type]: (state: CardsState, action: PayloadAction<ICard>) => {
-      state.cards.items = state.cards.items.map(card => {
+    [decLearningRate.fulfilled.type]: (
+      state: CardsState,
+      action: PayloadAction<ICard>
+    ) => {
+      state.cards.items = state.cards.items.map((card) => {
         if (card.id === action.payload.id) {
           return {
             ...card,
-            learningRate: action.payload.learningRate
+            learningRate: action.payload.learningRate,
           };
         } else {
           return card;
         }
       });
-      state.cards.status = "Loaded";
+      state.cards.status = Loading.Loaded;
     },
 
-    [encLearningRate.fulfilled.type]: (state: CardsState, action: PayloadAction<ICard>) => {
-      state.cards.items = state.cards.items.map(card => {
+    [encLearningRate.fulfilled.type]: (
+      state: CardsState,
+      action: PayloadAction<ICard>
+    ) => {
+      state.cards.items = state.cards.items.map((card) => {
         if (card.id === action.payload.id) {
           return {
             ...card,
-            learningRate: action.payload.learningRate
+            learningRate: action.payload.learningRate,
           };
         } else {
           return card;
         }
       });
-      state.cards.status = "Loaded";
+      state.cards.status = Loading.Loaded;
     },
 
     [fetchEditCard.pending.type]: (state: CardsState) => {
-      state.cards.status = "Loading";
+      state.cards.status = Loading.Loading;
     },
     [fetchEditCard.fulfilled.type]: (
       state: CardsState,
       action: PayloadAction<ICard>
     ) => {
-      state.cards.items = state.cards.items.map(card => {
+      state.cards.items = state.cards.items.map((card) => {
         if (card.id === action.payload.id) {
           return {
             ...card,
@@ -174,11 +205,11 @@ const cardsSlice = createSlice({
           return card;
         }
       });
-      state.cards.status = "Loaded";
+      state.cards.status = Loading.Loaded;
     },
     [fetchEditCard.rejected.type]: (state: CardsState) => {
       state.cards.items = [];
-      state.cards.status = "Error";
+      state.cards.status = Loading.Error;
     },
   },
 });

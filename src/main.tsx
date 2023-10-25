@@ -19,6 +19,7 @@ import FirstStep from "./components/practice/FirstStep.tsx";
 import SecondStep from "./components/practice/SecondStep.tsx";
 import ThirdStep from "./components/practice/ThirdStep.tsx";
 import FourthStep from "./components/practice/FourthStep.tsx";
+import Pagination from "./components/dictionary/Pagination.tsx";
 
 const router = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
         <FourthStep />
       </>
     ),
+  },
+  {
+    path: "/pagin",
+    element: <Pagination />,
   },
 ]);
 

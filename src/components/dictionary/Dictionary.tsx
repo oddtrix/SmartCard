@@ -4,22 +4,23 @@ import CardContainer from "./CardContainer";
 import { Navigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ICardId } from "../../types/global.typing";
+import { ICardId, IUserId } from "../../types/global.typing";
 import { getUserId } from "../../helpers/additionFunction";
+import { Loading } from "../../redux/slices/auth";
 
 const Dictionary = () => {
   const dispatch = useAppDispatch();
-  const cards = useAppSelector((state) => state.cards);
+  const cards = useAppSelector((state) => state.cards.cards);
 
-  const userId: ICardId = getUserId();
+  const userId: IUserId = getUserId();
 
   React.useEffect(() => {
-    dispatch(fetchCards(userId));
+    dispatch(fetchCards({ userId }));
   }, []);
   return (
     <div>
-      {cards.cards.status === "Loaded" ? (
-        <CardContainer myCards={cards.cards.items} />
+      {cards.status === Loading.Loaded ? (
+        <CardContainer />
       ) : (
         <div className="flex justify-center mt-28">
           <TailSpin
