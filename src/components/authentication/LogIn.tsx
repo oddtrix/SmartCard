@@ -48,9 +48,8 @@ const SignIn = () => {
 
   const submitForm = async (data: IUserLoginDTO) => {
     const result = await dispatch(LoginUser(data));
-
-    if (result?.error?.message.includes("404")) {
-      setError("root.serverError", { type: 404 });
+    if (result.meta.requestStatus === "rejected") {
+      setError("root.serverError", { type: "404" });
     }
     if (result.payload) {
       if ("token" in result.payload) {
@@ -98,7 +97,7 @@ const SignIn = () => {
             </span>
           </h5>
 
-          {errors?.root?.serverError.type === 404 && (
+          {errors?.root?.serverError.type === "404" && (
             <p className="text-left text-red-500 text-sm">
               Невірна адреса електронної пошти або пароль
             </p>

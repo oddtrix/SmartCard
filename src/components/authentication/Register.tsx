@@ -59,8 +59,8 @@ const Register = () => {
   const submitForm = async (data: IUserSignInDTO) => {
     const result = await dispatch(RegisterUser(data));
 
-    if (result?.error?.message.includes("403")) {
-      setError("root.serverError", { type: 403 });
+    if (result.meta.requestStatus === "rejected") {
+      setError("root.serverError", { type: "403" });
     } else {
       return navigate("/login");
     }
@@ -75,7 +75,7 @@ const Register = () => {
             SmartCard
           </span>
         </h1>
-        {errors?.root?.serverError.type === 403 && (
+        {errors?.root?.serverError.type === "403" && (
           <p className="text-center text-red-500 text-sm">
             Користувач з таким ніком або поштою вже існує
           </p>
