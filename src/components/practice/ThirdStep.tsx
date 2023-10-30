@@ -9,11 +9,7 @@ import volume from "../../../public/img/volume.svg";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getUserId, listenTo } from "../../helpers/additionFunction";
 import { IUserId } from "../../types/user.typing";
-import {
-  IAnswerCard,
-  IAnswerCardInp,
-  IQuizCardInp,
-} from "../../types/card.typing";
+import { IAnswerCardInp, IQuizCardInp } from "../../types/card.typing";
 
 const ThirdStep = () => {
   const dispatch = useAppDispatch();
@@ -44,16 +40,41 @@ const ThirdStep = () => {
     });
 
   const handleAnswerOptionClick = (ansop: IAnswerCardInp) => {
-    let answer = document.getElementById("inp_answ")?.value;
-    console.log(answer);
-    console.log(ansop);
-    if (ansop.questionWord === answer) {
-      dispatch(encLearningRate(ansop));
-      setLearnedWords([
-        ...learnedWords,
-        [ansop.questionWord, <span className="text-green-400">+1%</span>],
-      ]);
-      if (answer !== "") {
+    let inputElement = document.getElementById(
+      "inp_answ"
+    ) as HTMLInputElement | null;
+    if (inputElement) {
+      let answer = inputElement.value;
+      console.log(answer);
+      console.log(ansop);
+      if (ansop.questionWord === answer) {
+        dispatch(encLearningRate(ansop));
+        setLearnedWords([
+          ...learnedWords,
+          [ansop.questionWord, <span className="text-green-400">+1%</span>],
+        ]);
+        if (answer !== "") {
+          const inputElement = document.getElementById(
+            "inp_answ"
+          ) as HTMLInputElement | null;
+
+          if (inputElement) {
+            inputElement.value = "";
+          }
+        }
+      } else {
+        dispatch(decLearningRate(ansop));
+        setLearnedWords([
+          ...learnedWords,
+          [
+            ansop.questionWord,
+            ansop.questionWord_lr === 0 ? (
+              "0%"
+            ) : (
+              <span className="text-red-400">-1%</span>
+            ),
+          ],
+        ]);
         const inputElement = document.getElementById(
           "inp_answ"
         ) as HTMLInputElement | null;
@@ -62,32 +83,12 @@ const ThirdStep = () => {
           inputElement.value = "";
         }
       }
-    } else {
-      dispatch(decLearningRate(ansop));
-      setLearnedWords([
-        ...learnedWords,
-        [
-          ansop.questionWord,
-          ansop.questionWord_lr === 0 ? (
-            "0%"
-          ) : (
-            <span className="text-red-400">-1%</span>
-          ),
-        ],
-      ]);
-      const inputElement = document.getElementById(
-        "inp_answ"
-      ) as HTMLInputElement | null;
-
-      if (inputElement) {
-        inputElement.value = "";
+      const nextQuestion = currentQuestion + 1;
+      if (nextQuestion < quiz.length) {
+        setCurrentQuestion(nextQuestion);
+      } else {
+        setEnd(true);
       }
-    }
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < quiz.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setEnd(true);
     }
   };
 

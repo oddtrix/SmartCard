@@ -40,14 +40,40 @@ const FourthStep = () => {
     });
 
   const handleAnswerOptionClick = (ansop: IAnswerCardInp) => {
-    let answer = document.getElementById("inp_answ")?.value;
-    if (ansop.answer === answer) {
-      dispatch(encLearningRate(ansop));
-      setLearnedWords([
-        ...learnedWords,
-        [ansop.questionWord, <span className="text-green-400">+1%</span>],
-      ]);
-      if (answer !== "") {
+    let inputElement = document.getElementById(
+      "inp_answ"
+    ) as HTMLInputElement | null;
+
+    if (inputElement) {
+      let answer = inputElement.value;
+      if (ansop.answer === answer) {
+        dispatch(encLearningRate(ansop));
+        setLearnedWords([
+          ...learnedWords,
+          [ansop.questionWord, <span className="text-green-400">+1%</span>],
+        ]);
+        if (answer !== "") {
+          const inputElement = document.getElementById(
+            "inp_answ"
+          ) as HTMLInputElement | null;
+
+          if (inputElement) {
+            inputElement.value = "";
+          }
+        }
+      } else {
+        dispatch(decLearningRate(ansop));
+        setLearnedWords([
+          ...learnedWords,
+          [
+            ansop.questionWord,
+            ansop.questionWord_lr === 0 ? (
+              "0%"
+            ) : (
+              <span className="text-red-400">-1%</span>
+            ),
+          ],
+        ]);
         const inputElement = document.getElementById(
           "inp_answ"
         ) as HTMLInputElement | null;
@@ -56,32 +82,12 @@ const FourthStep = () => {
           inputElement.value = "";
         }
       }
-    } else {
-      dispatch(decLearningRate(ansop));
-      setLearnedWords([
-        ...learnedWords,
-        [
-          ansop.questionWord,
-          ansop.questionWord_lr === 0 ? (
-            "0%"
-          ) : (
-            <span className="text-red-400">-1%</span>
-          ),
-        ],
-      ]);
-      const inputElement = document.getElementById(
-        "inp_answ"
-      ) as HTMLInputElement | null;
-
-      if (inputElement) {
-        inputElement.value = "";
+      const nextQuestion = currentQuestion + 1;
+      if (nextQuestion < quiz.length) {
+        setCurrentQuestion(nextQuestion);
+      } else {
+        setEnd(true);
       }
-    }
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < quiz.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setEnd(true);
     }
   };
 
