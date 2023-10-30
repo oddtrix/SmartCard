@@ -1,10 +1,10 @@
 import { useState } from "react";
 import AddCard from "../card/AddCard";
 import EditCard from "../card/EditCard";
-import { ICard } from "../../types/global.typing";
 import CardItem from "./CardItem";
 import Pagination from "./Pagination";
 import { useAppSelector } from "../../redux/hooks";
+import { ICard } from "../../types/card.typing";
 
 const CardContainer = () => {
   const pageSize = 10;
@@ -13,8 +13,8 @@ const CardContainer = () => {
   const myCards = useAppSelector((state) => state.cards.cards.items);
   const totalPages = Math.ceil(myCards.length / pageSize);
 
-  const [addWord, setAddWord] = useState(false);
-  const [editCard, setEdit] = useState(false);
+  const [addWord, setAddWord] = useState<boolean>(false);
+  const [editCard, setEdit] = useState<boolean>(false);
 
   const [updateCardId, setUpdateCard] = useState("");
   const [updateCardWord, setUpdateCardWord] = useState("");
@@ -26,11 +26,10 @@ const CardContainer = () => {
 
   return (
     <>
-      {addWord ? <AddCard addword={addWord} setAddWord={setAddWord} /> : false}
+      {addWord ? <AddCard setAddWord={setAddWord} /> : false}
 
       {editCard ? (
         <EditCard
-          editCard={editCard}
           setEdit={setEdit}
           updateCardId={updateCardId}
           updateCardWord={updateCardWord}
@@ -84,6 +83,7 @@ const CardContainer = () => {
                 <CardItem
                   card={card}
                   key={card.id}
+                  admin={false}
                   setEdit={setEdit}
                   setUpdateCard={setUpdateCard}
                   setUpdateCardWord={setUpdateCardWord}
@@ -93,7 +93,6 @@ const CardContainer = () => {
           </tbody>
         </table>
       </div>
-      {console.log(currentPage)}
       <Pagination
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
-import { RootState } from "../store";
-import { UserLoginDTO, UserSignInDTO } from "../../types/global.typing";
+import { IUserState, Loading } from "../../types/global.typing";
+import { IUserLoginDTO, IUserSignInDTO } from "../../types/user.typing";
 
-export const fetchAuth = createAsyncThunk(
-  "auth/fetchAuth",
-  async (userData: UserLoginDTO) => {
+export const LoginUser = createAsyncThunk(
+  "auth/LoginUser",
+  async (userData: IUserLoginDTO) => {
     const { data } = await axios.post("/Authentication/Login", userData);
     return data;
   }
@@ -14,35 +14,15 @@ export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
   const { data } = await axios.get("/Authentication/Me");
   return data;
 });
-export const fetchRegister = createAsyncThunk(
-  "auth/fetchRegister",
-  async (userData: UserSignInDTO) => {
+export const RegisterUser = createAsyncThunk(
+  "auth/RegisterUser",
+  async (userData: IUserSignInDTO) => {
     const { data } = await axios.post("/Authentication/Register", userData);
     return data;
   }
 );
 
-type User = {
-  username: string;
-  password: string;
-  email: string;
-  name: string;
-  surname: string;
-};
-
-type UserState = {
-  data: User | null;
-  status: Loading;
-};
-
-export enum Loading {
-  "Idle",
-  "Loading",
-  "Loaded",
-  "Error",
-}
-
-const initialState: UserState = {
+const initialState: IUserState = {
   data: null,
   status: Loading.Idle,
 };
@@ -53,18 +33,19 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.data = null;
+      state.status = Loading.Idle;
     },
   },
   extraReducers: {
-    [fetchAuth.pending.type]: (state) => {
+    [LoginUser.pending.type]: (state) => {
       state.status = Loading.Loading;
       state.data = null;
     },
-    [fetchAuth.fulfilled.type]: (state, action) => {
+    [LoginUser.fulfilled.type]: (state, action) => {
       state.status = Loading.Loaded;
       state.data = action.payload;
     },
-    [fetchAuth.rejected.type]: (state) => {
+    [LoginUser.rejected.type]: (state) => {
       state.status = Loading.Error;
       state.data = null;
     },
@@ -80,15 +61,15 @@ const authSlice = createSlice({
       state.status = Loading.Error;
       state.data = null;
     },
-    [fetchRegister.pending.type]: (state) => {
+    [RegisterUser.pending.type]: (state) => {
       state.status = Loading.Loading;
       state.data = null;
     },
-    [fetchRegister.fulfilled.type]: (state, action) => {
-      state.status = Loading.Loaded;
+    [RegisterUser.fulfilled.type]: (state, action) => {
+      state.status = Loading.Success;
       state.data = action.payload;
     },
-    [fetchRegister.rejected.type]: (state) => {
+    [RegisterUser.rejected.type]: (state) => {
       state.status = Loading.Error;
       state.data = null;
     },

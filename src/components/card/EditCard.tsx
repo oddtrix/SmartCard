@@ -1,12 +1,10 @@
-import { SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { ICardUpdate } from "../../types/global.typing";
 import { useAppDispatch } from "../../redux/hooks";
 import { fetchEditCard } from "../../redux/slices/cards";
+import { ICardUpdate } from "../../types/card.typing";
 
 const EditCard = (props: {
-  editCard: string;
-  setEdit: SetStateAction<boolean>;
+  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
   updateCardId: string;
   updateCardWord: string;
   updateCardTranslate: string;
@@ -23,12 +21,7 @@ const EditCard = (props: {
     }
     handleClick();
   };
-  const {
-    register,
-    handleSubmit,
-    setError,
-    // formState: { errors, isValid },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       id: props.updateCardId,
       word: props.updateCardWord,
@@ -37,7 +30,7 @@ const EditCard = (props: {
     mode: "onSubmit",
   });
   return (
-    <div className="">
+    <div className="mt-5">
       <div className="border border-black inline-block rounded-md">
         <form onSubmit={handleSubmit(submitForm)}>
           <div className="m-4">

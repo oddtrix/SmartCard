@@ -1,45 +1,36 @@
-export interface ICard {
-  id: string;
-  word: string;
-  translation: string;
-  learningRate: number;
-}
+import { IAdminUser } from "./admin.typing";
+import { ICard } from "./card.typing";
+import { IUser, IUserLoginDTO } from "./user.typing";
 
-export interface ICardUpdate {
-  id: string;
-  word: string;
-  translation: string;
-}
-
-export interface IUserId {
-  id: string | null;
-}
-
-export interface ICardId extends IUserId {}
-
-export interface FormData {
-  email: string;
-  password: string;
-}
-
-export type UserLoginDTO = {
-  email: string;
-  password: string;
-};
-
-export type UserSignInDTO = {
-  name: string;
-  surname: string;
-  username: string;
-  email: string;
-  password: string;
-};
-
-export type CardDTO = {
-  word: string;
-  translation: string;
-}
+export interface FormData extends IUserLoginDTO {}
 
 export interface DecodedToken {
   [key: string]: string;
+}
+
+export enum Loading {
+  "Idle",
+  "Loading",
+  "Loaded",
+  "Error",
+  "Success",
+}
+
+export interface IUserState {
+  data: IUser | null;
+  status: Loading;
+}
+
+export interface ICardsState {
+  cards: {
+    items: ICard[];
+    status: Loading;
+  };
+}
+
+export interface IAdminState {
+  users: {
+    items: IAdminUser[];
+    status: Loading;
+  };
 }

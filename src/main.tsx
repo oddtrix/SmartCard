@@ -11,7 +11,7 @@ import {
 import "./index.css";
 
 import Register from "./components/authentication/Register.tsx";
-import Navbar from "./components/navbar/Navbar.tsx";
+import Navbar from "./components/layout/Navbar.tsx";
 import Dictionary from "./components/dictionary/Dictionary.tsx";
 import LogIn from "./components/authentication/LogIn.tsx";
 import Exercises from "./components/practice/Exercises.tsx";
@@ -19,7 +19,7 @@ import FirstStep from "./components/practice/FirstStep.tsx";
 import SecondStep from "./components/practice/SecondStep.tsx";
 import ThirdStep from "./components/practice/ThirdStep.tsx";
 import FourthStep from "./components/practice/FourthStep.tsx";
-import Pagination from "./components/dictionary/Pagination.tsx";
+import AdminPage from "./components/admin/AdminPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />,
   },
   {
     path: "/dictionary",
@@ -91,10 +95,6 @@ const router = createBrowserRouter([
         <FourthStep />
       </>
     ),
-  },
-  {
-    path: "/pagin",
-    element: <Pagination />,
   },
 ]);
 

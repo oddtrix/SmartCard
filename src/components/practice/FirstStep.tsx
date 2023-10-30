@@ -6,20 +6,25 @@ import {
   fetchCards,
 } from "../../redux/slices/cards";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ICardId } from "../../types/global.typing";
 import { v4 } from "uuid";
 import { getUserId, shuffle } from "../../helpers/additionFunction";
+import { IUserId } from "../../types/user.typing";
+import { IAnswerCard, IQuizCard } from "../../types/card.typing";
 
 const FirstStep = () => {
   const dispatch = useAppDispatch();
   const cards = useAppSelector((state) => state.cards.cards.items);
 
-  const userId: ICardId = getUserId();
+  const userId: IUserId = getUserId();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  console.log(currentQuestion);
   const [end, setEnd] = useState(false);
-  const [learnedWords, setLearnedWords] = useState([]);
-  const quiz = [...cards]
+  const [learnedWords, setLearnedWords] = useState<[string, React.ReactNode][]>(
+    []
+  );
+  console.log(learnedWords);
+  const quiz: IQuizCard[] = [...cards]
     .sort((a, b) => a.learningRate - b.learningRate)
     .slice(0, 5)
     .map((card) => {
@@ -43,8 +48,8 @@ const FirstStep = () => {
         ),
       };
     });
-
-  const handleAnswerOptionClick = (ansop) => {
+  console.log(quiz);
+  const handleAnswerOptionClick = (ansop: IAnswerCard) => {
     if (ansop.isCorrect) {
       dispatch(encLearningRate(ansop));
       setLearnedWords([
@@ -74,7 +79,7 @@ const FirstStep = () => {
   };
 
   React.useEffect(() => {
-    dispatch(fetchCards(userId));
+    dispatch(fetchCards({ userId }));
   }, []);
   return (
     <div className="flex mt-20 justify-between ">

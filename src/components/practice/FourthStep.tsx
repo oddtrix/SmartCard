@@ -7,25 +7,28 @@ import {
 import { v4 } from "uuid";
 import volume from "../../../public/img/volume.svg";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ICardId } from "../../types/global.typing";
 import { getUserId, listenTo } from "../../helpers/additionFunction";
+import { IUserId } from "../../types/user.typing";
+import { IAnswerCardInp, IQuizCardInp } from "../../types/card.typing";
 
 const FourthStep = () => {
   const dispatch = useAppDispatch();
   const cards = useAppSelector((state) => state.cards.cards.items);
 
-  const userId: ICardId = getUserId();
+  const userId: IUserId = getUserId();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [end, setEnd] = useState(false);
-  const [learnedWords, setLearnedWords] = useState([]);
-  const quiz = [...cards]
+  const [learnedWords, setLearnedWords] = useState<[string, React.ReactNode][]>(
+    []
+  );
+  const quiz: IQuizCardInp[] = [...cards]
     .sort((a, b) => a.learningRate - b.learningRate)
     .slice(0, 5)
     .map((card) => {
       return {
         questionWord: card.word,
-        answerOption: [
+        answerOptions: [
           {
             questionWord: card.word,
             answer: card.translation,
@@ -36,8 +39,8 @@ const FourthStep = () => {
       };
     });
 
-  const handleAnswerOptionClick = (ansop) => {
-    let answer = document.getElementById("inp_answ").value;
+  const handleAnswerOptionClick = (ansop: IAnswerCardInp) => {
+    let answer = document.getElementById("inp_answ")?.value;
     if (ansop.answer === answer) {
       dispatch(encLearningRate(ansop));
       setLearnedWords([
@@ -45,7 +48,13 @@ const FourthStep = () => {
         [ansop.questionWord, <span className="text-green-400">+1%</span>],
       ]);
       if (answer !== "") {
-        document.getElementById("inp_answ").value = "";
+        const inputElement = document.getElementById(
+          "inp_answ"
+        ) as HTMLInputElement | null;
+
+        if (inputElement) {
+          inputElement.value = "";
+        }
       }
     } else {
       dispatch(decLearningRate(ansop));
@@ -60,7 +69,13 @@ const FourthStep = () => {
           ),
         ],
       ]);
-      document.getElementById("inp_answ").value = "";
+      const inputElement = document.getElementById(
+        "inp_answ"
+      ) as HTMLInputElement | null;
+
+      if (inputElement) {
+        inputElement.value = "";
+      }
     }
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < quiz.length) {
@@ -71,7 +86,7 @@ const FourthStep = () => {
   };
 
   React.useEffect(() => {
-    dispatch(fetchCards(userId));
+    dispatch(fetchCards({ userId }));
   }, []);
   return (
     <div className="flex mt-20 justify-between">
@@ -120,7 +135,7 @@ const FourthStep = () => {
               </div>
               <hr className="w-full h-px my-5 bg-gray-200 border-0 dark:bg-gray-700"></hr>
               {quiz.length > 0
-                ? quiz[currentQuestion].answerOption.map((ansop) => (
+                ? quiz[currentQuestion].answerOptions.map((ansop) => (
                     <div className="flex flex-col items-center" key={v4()}>
                       <div className="">
                         <h3 className="mt-9 mb-5 text-xl flex items-center ">

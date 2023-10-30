@@ -1,6 +1,6 @@
 import { Link, Navigate } from "react-router-dom";
-import { DecodedToken, ICardId } from "../../types/global.typing";
 import { getUserId } from "../../helpers/additionFunction";
+import { ICardId } from "../../types/card.typing";
 
 const Exercises = () => {
   const userId: ICardId = getUserId();
@@ -39,9 +39,7 @@ const Exercises = () => {
           <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 ">
             Третій крок
           </h5>
-          <p className="font-normal text-gray-700 ">
-            Правильно написати слово
-          </p>
+          <p className="font-normal text-gray-700 ">Правильно написати слово</p>
         </Link>
         <Link
           to="fourth-step"
@@ -60,6 +58,3 @@ const Exercises = () => {
 };
 
 export default Exercises;
-function jwt_decode(token: string): DecodedToken | null {
-  throw new Error("Function not implemented.");
-}

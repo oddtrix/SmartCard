@@ -4,9 +4,10 @@ import CardContainer from "./CardContainer";
 import { Navigate } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ICardId, IUserId } from "../../types/global.typing";
+
 import { getUserId } from "../../helpers/additionFunction";
-import { Loading } from "../../redux/slices/auth";
+import { IUserId } from "../../types/user.typing";
+import { Loading } from "../../types/global.typing";
 
 const Dictionary = () => {
   const dispatch = useAppDispatch();

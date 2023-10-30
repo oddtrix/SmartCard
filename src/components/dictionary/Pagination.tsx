@@ -1,18 +1,13 @@
-import React, { SetStateAction, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { fetchCards, fetchCardsPages } from "../../redux/slices/cards";
-import { IUserId } from "../../types/global.typing";
-import { getUserId } from "../../helpers/additionFunction";
-import { Loading } from "../../redux/slices/auth";
+import { SetStateAction } from "react";
 import { arrowLeft, arrowRight } from "../../constants/svg.constants";
 
 const Pagination = (props: {
   totalPages: number;
   currentPage: number;
-  setCurrentPage: SetStateAction<number>;
+  setCurrentPage: React.Dispatch<SetStateAction<number>>;
 }) => {
   return (
-    <nav className="flex justify-center mt-5">
+    <nav className="flex justify-center mt-5 mb-4">
       <ul className="flex items-center -space-x-px h-10 text-base">
         <li>
           <button

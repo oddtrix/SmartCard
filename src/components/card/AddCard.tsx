@@ -1,31 +1,24 @@
-import { SetStateAction } from "react";
 import { useForm } from "react-hook-form";
-import { CardDTO } from "../../types/global.typing";
 import { useAppDispatch } from "../../redux/hooks";
 import { fetchCreateCard } from "../../redux/slices/cards";
+import { ICardDTO } from "../../types/card.typing";
 
 const AddCard = (props: {
-  addword: string;
-  setAddWord: SetStateAction<boolean>;
+  setAddWord: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const dispatch = useAppDispatch();
   const handleClick = () => {
     props.setAddWord(false);
   };
 
-  const submitForm = async (data: CardDTO) => {
+  const submitForm = async (data: ICardDTO) => {
     const result = await dispatch(fetchCreateCard(data));
     if (!result.payload) {
       return alert("Помилка");
     }
     handleClick();
   };
-  const {
-    register,
-    handleSubmit,
-    setError,
-    // formState: { errors, isValid },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       word: "",
       translation: "",
@@ -33,7 +26,7 @@ const AddCard = (props: {
     mode: "onChange",
   });
   return (
-    <div className="">
+    <div className="mt-5">
       <div className="border border-black inline-block rounded-md">
         <form onSubmit={handleSubmit(submitForm)}>
           <div className="m-4">

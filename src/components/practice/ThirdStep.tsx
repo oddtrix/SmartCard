@@ -6,28 +6,36 @@ import {
 } from "../../redux/slices/cards";
 import { v4 } from "uuid";
 import volume from "../../../public/img/volume.svg";
-import { ICardId } from "../../types/global.typing";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getUserId, listenTo } from "../../helpers/additionFunction";
+import { IUserId } from "../../types/user.typing";
+import {
+  IAnswerCard,
+  IAnswerCardInp,
+  IQuizCardInp,
+} from "../../types/card.typing";
 
 const ThirdStep = () => {
   const dispatch = useAppDispatch();
   const cards = useAppSelector((state) => state.cards.cards.items);
 
-  const userId: ICardId = getUserId();
+  const userId: IUserId = getUserId();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [end, setEnd] = useState(false);
-  const [learnedWords, setLearnedWords] = useState([]);
-  const quiz = [...cards]
+  const [learnedWords, setLearnedWords] = useState<[string, React.ReactNode][]>(
+    []
+  );
+  const quiz: IQuizCardInp[] = [...cards]
     .sort((a, b) => a.learningRate - b.learningRate)
     .slice(0, 5)
     .map((card) => {
       return {
         questionWord: card.word,
-        answerOption: [
+        answerOptions: [
           {
             questionWord: card.word,
+            answer: null,
             questionWord_id: card.id,
             questionWord_lr: card.learningRate,
           },
@@ -35,10 +43,10 @@ const ThirdStep = () => {
       };
     });
 
-  const handleAnswerOptionClick = (ansop) => {
-    let answer = document.getElementById("inp_answ").value;
-    console.log(answer)
-    console.log(ansop)
+  const handleAnswerOptionClick = (ansop: IAnswerCardInp) => {
+    let answer = document.getElementById("inp_answ")?.value;
+    console.log(answer);
+    console.log(ansop);
     if (ansop.questionWord === answer) {
       dispatch(encLearningRate(ansop));
       setLearnedWords([
@@ -46,7 +54,13 @@ const ThirdStep = () => {
         [ansop.questionWord, <span className="text-green-400">+1%</span>],
       ]);
       if (answer !== "") {
-        document.getElementById("inp_answ").value = "";
+        const inputElement = document.getElementById(
+          "inp_answ"
+        ) as HTMLInputElement | null;
+
+        if (inputElement) {
+          inputElement.value = "";
+        }
       }
     } else {
       dispatch(decLearningRate(ansop));
@@ -61,7 +75,13 @@ const ThirdStep = () => {
           ),
         ],
       ]);
-      document.getElementById("inp_answ").value = "";
+      const inputElement = document.getElementById(
+        "inp_answ"
+      ) as HTMLInputElement | null;
+
+      if (inputElement) {
+        inputElement.value = "";
+      }
     }
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion < quiz.length) {
@@ -72,7 +92,7 @@ const ThirdStep = () => {
   };
 
   React.useEffect(() => {
-    dispatch(fetchCards(userId));
+    dispatch(fetchCards({ userId }));
   }, []);
   return (
     <div className="flex mt-20 justify-between">
@@ -121,7 +141,7 @@ const ThirdStep = () => {
               </div>
               <hr className="w-full h-px my-5 bg-gray-200 border-0 dark:bg-white"></hr>
               {quiz.length > 0
-                ? quiz[currentQuestion].answerOption.map((ansop) => (
+                ? quiz[currentQuestion].answerOptions.map((ansop) => (
                     <div className="flex flex-col items-center" key={v4()}>
                       <div className="">
                         <h3 className="mt-9 mb-5 text-xl flex items-center ">

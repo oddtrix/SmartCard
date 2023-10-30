@@ -1,31 +1,30 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "../../helpers/http.module";
+import { IUserId } from "../../types/user.typing";
 import {
-  CardDTO,
+  IAnswerCard,
+  IAnswerCardInp,
   ICard,
+  ICardDTO,
   ICardUpdate,
-  IUserId,
-} from "../../types/global.typing";
-import { Loading } from "./auth";
+} from "../../types/card.typing";
+import { ICardsState, Loading } from "../../types/global.typing";
 
 export const fetchCards = createAsyncThunk(
   "cards/fetchCards",
-  async ({ userId, currentPage }: { userId: IUserId; currentPage: number }) => {
+  async ({ userId }: { userId: IUserId }) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    const { data } = await axios.get(
-      `/Domain/Get/${userId.id}?CurrentPage=${currentPage}`,
-      { headers }
-    );
+    const { data } = await axios.get(`/Domain/Get/${userId.id}`, { headers });
     return data;
   }
 );
 
 export const fetchCreateCard = createAsyncThunk(
   "cards/fetchCreateCard",
-  async (card: CardDTO) => {
+  async (card: ICardDTO) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -71,7 +70,7 @@ export const fetchEditCard = createAsyncThunk(
 
 export const encLearningRate = createAsyncThunk(
   "cards/encLearningRate",
-  async (ansop) => {
+  async (ansop: IAnswerCard | IAnswerCardInp) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -86,7 +85,7 @@ export const encLearningRate = createAsyncThunk(
 );
 export const decLearningRate = createAsyncThunk(
   "cards/decLearningRate",
-  async (ansop) => {
+  async (ansop: IAnswerCard | IAnswerCardInp) => {
     const token = window.localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -100,14 +99,7 @@ export const decLearningRate = createAsyncThunk(
   }
 );
 
-type CardsState = {
-  cards: {
-    items: ICard[];
-    status: Loading;
-  };
-};
-
-const initialState: CardsState = {
+const initialState: ICardsState = {
   cards: {
     items: [],
     status: Loading.Loading,
@@ -119,30 +111,30 @@ const cardsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchCards.pending.type]: (state: CardsState) => {
+    [fetchCards.pending.type]: (state: ICardsState) => {
       state.cards.items = [];
       state.cards.status = Loading.Loading;
     },
     [fetchCards.fulfilled.type]: (
-      state: CardsState,
+      state: ICardsState,
       action: PayloadAction<ICard[], string>
     ) => {
       state.cards.items = action.payload;
       state.cards.status = Loading.Loaded;
     },
-    [fetchCards.rejected.type]: (state: CardsState) => {
+    [fetchCards.rejected.type]: (state: ICardsState) => {
       state.cards.items = [];
       state.cards.status = Loading.Error;
     },
 
     [fetchCreateCard.fulfilled.type]: (
-      state: CardsState,
+      state: ICardsState,
       action: PayloadAction<ICard>
     ) => {
       state.cards.items.push(action.payload);
     },
 
-    [fetchDeleteCard.fulfilled.type]: (state: CardsState, action) => {
+    [fetchDeleteCard.fulfilled.type]: (state: ICardsState, action) => {
       state.cards.items = state.cards.items.filter(
         (card) => card.id !== action.meta.arg
       );
@@ -154,7 +146,7 @@ const cardsSlice = createSlice({
     // },
 
     [decLearningRate.fulfilled.type]: (
-      state: CardsState,
+      state: ICardsState,
       action: PayloadAction<ICard>
     ) => {
       state.cards.items = state.cards.items.map((card) => {
@@ -171,7 +163,7 @@ const cardsSlice = createSlice({
     },
 
     [encLearningRate.fulfilled.type]: (
-      state: CardsState,
+      state: ICardsState,
       action: PayloadAction<ICard>
     ) => {
       state.cards.items = state.cards.items.map((card) => {
@@ -187,11 +179,11 @@ const cardsSlice = createSlice({
       state.cards.status = Loading.Loaded;
     },
 
-    [fetchEditCard.pending.type]: (state: CardsState) => {
+    [fetchEditCard.pending.type]: (state: ICardsState) => {
       state.cards.status = Loading.Loading;
     },
     [fetchEditCard.fulfilled.type]: (
-      state: CardsState,
+      state: ICardsState,
       action: PayloadAction<ICard>
     ) => {
       state.cards.items = state.cards.items.map((card) => {
@@ -207,7 +199,7 @@ const cardsSlice = createSlice({
       });
       state.cards.status = Loading.Loaded;
     },
-    [fetchEditCard.rejected.type]: (state: CardsState) => {
+    [fetchEditCard.rejected.type]: (state: ICardsState) => {
       state.cards.items = [];
       state.cards.status = Loading.Error;
     },

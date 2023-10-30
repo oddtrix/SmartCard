@@ -1,11 +1,9 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout, selectorIsAuth } from "../../redux/slices/auth";
-import { moon, sun } from "../../constants/svg.constants";
+import { getUserName } from "../../helpers/additionFunction";
 
 const Navbar = () => {
-  const [theme, setTheme] = React.useState("light");
   const dispatch = useAppDispatch();
 
   const onClickLogOut = () => {
@@ -14,11 +12,7 @@ const Navbar = () => {
       window.localStorage.removeItem("token");
     }
   };
-
-  const switchTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-    console.log("THEEME");
-  };
+  const user = getUserName();
 
   const toggle = (element: string) => {
     const el = document.getElementById(element);
@@ -26,17 +20,11 @@ const Navbar = () => {
       ? el.classList.remove("hidden")
       : el?.classList.add("hidden");
   };
-  React.useEffect(() => {
-    theme === "dark"
-      ? document.getElementById("root").classList.add("dark")
-      : document.getElementById("root").classList.remove("dark");
-  }, [theme]);
 
   return (
     <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 rounded-xl sticky z-10 top-0 bg-white shadow-md ">
       <div className="flex justify-between md:hidden">
         <Link to="/" className="flex items-center">
-          {/* <img src={icon} className="h-10 mr-3 sm:h-10" alt="SmartCard Logo" /> */}
           <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
             SmartCard
           </span>
@@ -91,13 +79,13 @@ const Navbar = () => {
               Вправи
             </Link>
           </li>
-          <li>
+          {/* <li>
             <div className="flex flex-col md:hidden ">
               <button onClick={switchTheme} className="flex justify-center">
                 {theme === "light" ? moon : sun}
               </button>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div className="container flex flex-wrap items-center justify-between mx-auto max-md:hidden">
@@ -110,12 +98,13 @@ const Navbar = () => {
         <div className="flex items-center md:order-2">
           {selectorIsAuth() ? (
             <div className="flex flex-row items-center">
-              <button onClick={switchTheme} className="flex mr-4">
+              {/* <button onClick={switchTheme} className="flex mr-4">
                 {theme === "light" ? moon : sun}
-              </button>
+              </button> */}
+              <p className="text-lg mr-4">&#128075;, {user.username}</p>
               <Link
                 to="/"
-                className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg "
+                className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium rounded-lg "
               >
                 <span
                   onClick={onClickLogOut}
@@ -128,7 +117,7 @@ const Navbar = () => {
           ) : (
             <Link
               to="/login"
-              className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg "
+              className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium rounded-lg "
             >
               <span className="relative text-black px-5 py-2.5 transition-all ease-in duration-75 border border-black rounded-md group-hover:bg-opacity-0 hover:bg-black hover:text-white">
                 Увійти

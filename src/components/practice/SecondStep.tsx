@@ -5,19 +5,22 @@ import {
   fetchCards,
 } from "../../redux/slices/cards";
 import { v4 } from "uuid";
-import { ICardId } from "../../types/global.typing";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getUserId, shuffle } from "../../helpers/additionFunction";
+import { IUserId } from "../../types/user.typing";
+import { IAnswerCard } from "../../types/card.typing";
 
 const SecondStep = () => {
   const dispatch = useAppDispatch();
   const cards = useAppSelector((state) => state.cards.cards.items);
 
-  const userId: ICardId = getUserId();
+  const userId: IUserId = getUserId();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [end, setEnd] = useState(false);
-  const [learnedWords, setLearnedWords] = useState([]);
+  const [learnedWords, setLearnedWords] = useState<[string, React.ReactNode][]>(
+    []
+  );
   const quiz = [...cards]
     .sort((a, b) => a.learningRate - b.learningRate)
     .slice(0, 5)
@@ -43,7 +46,7 @@ const SecondStep = () => {
       };
     });
 
-  const handleAnswerOptionClick = (ansop) => {
+  const handleAnswerOptionClick = (ansop: IAnswerCard) => {
     if (ansop.isCorrect) {
       dispatch(encLearningRate(ansop));
       setLearnedWords([
@@ -72,7 +75,7 @@ const SecondStep = () => {
     }
   };
   React.useEffect(() => {
-    dispatch(fetchCards(userId));
+    dispatch(fetchCards({ userId }));
   }, []);
   return (
     <div className="flex mt-20 justify-between">
