@@ -1,13 +1,16 @@
-import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useForm } from "react-hook-form";
-import { Link, Navigate } from "react-router-dom";
-import { TailSpin } from "react-loader-spinner";
 import { IUserLoginDTO } from "../../types/user.typing";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginUser } from "../../redux/slices/auth";
 import { Loading } from "../../types/global.typing";
+import { Link, Navigate } from "react-router-dom";
+import hide from "../../../public/img/hide.png";
+import show from "../../../public/img/show.png";
+import { TailSpin } from "react-loader-spinner";
+import { useForm } from "react-hook-form";
+import React from "react";
 import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 const SignIn = () => {
   const dispatch = useAppDispatch();
   const userStatus = useAppSelector((state) => state.auth.status);
@@ -142,9 +145,9 @@ const SignIn = () => {
                   onClick={togglePasswordVisibility}
                 >
                   {showPassword ? (
-                    <img src="../../../public/img/hide.png" className="w-6" />
+                    <img src={hide} className="w-6" />
                   ) : (
-                    <img src="../../../public/img/show.png" className="w-6" />
+                    <img src={show} className="w-6" />
                   )}
                 </label>
               </div>
