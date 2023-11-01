@@ -18,7 +18,7 @@ const SignIn = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
+  console.log(process.env.apiURL)
   const formSchema = Yup.object().shape({
     email: Yup.string()
       .required("Вкажіть пошту")
