@@ -59,13 +59,18 @@ const Navbar = () => {
       >
         <ul className=" max-md:h-screen font-medium flex items-center flex-col p-4 md:p-0 mt-4 border md:hidden rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 ">
           <li>
-            <Link to="/" className="block py-2 pl-3 pr-4 rounded text-black">
+            <Link
+              to="/"
+              onClick={() => toggle("navbar-default")}
+              className="block py-2 pl-3 pr-4 rounded text-black"
+            >
               Головна
             </Link>
           </li>
           <li>
             <Link
               to="/dictionary"
+              onClick={() => toggle("navbar-default")}
               className="block py-2 pl-3 pr-4 text-gray-900 rounded "
             >
               Словник
@@ -74,6 +79,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/practice"
+              onClick={() => toggle("navbar-default")}
               className="block py-2 pl-3 pr-4 text-gray-900 rounded "
             >
               Вправи
@@ -88,6 +94,7 @@ const Navbar = () => {
                 <p className="text-lg mr-4">&#128075;, {user.username}</p>
                 <Link
                   to="/"
+                  onClick={() => toggle("navbar-default")}
                   className="relative inline-flex items-center justify-center p-0.5  overflow-hidden text-sm font-medium rounded-lg "
                 >
                   <span
