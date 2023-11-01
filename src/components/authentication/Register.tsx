@@ -8,6 +8,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Loading } from "../../types/global.typing";
 import { TailSpin } from "react-loader-spinner";
+import hide from "../../../public/img/hide.png";
+import show from "../../../public/img/show.png";
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -187,9 +189,9 @@ const Register = () => {
                 onClick={togglePasswordVisibility}
               >
                 {showPassword ? (
-                  <img src="../../../public/img/hide.png" className="w-6" />
+                  <img src={hide} className="w-6" />
                 ) : (
-                  <img src="../../../public/img/show.png" className="w-6" />
+                  <img src={show} className="w-6" />
                 )}
               </label>
             </div>
