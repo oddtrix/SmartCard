@@ -34,7 +34,7 @@ const Dictionary = () => {
           />
         </div>
       )}
-      {userId.id !== null ? true : <Navigate to="/signin" />}
+      {userId.id !== undefined ? true : <Navigate to="/signin" />}
     </div>
   );
 };
