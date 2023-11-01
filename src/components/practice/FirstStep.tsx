@@ -18,12 +18,10 @@ const FirstStep = () => {
   const userId: IUserId = getUserId();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  console.log(currentQuestion);
   const [end, setEnd] = useState(false);
   const [learnedWords, setLearnedWords] = useState<[string, React.ReactNode][]>(
     []
   );
-  console.log(learnedWords);
   const quiz: IQuizCard[] = [...cards]
     .sort((a, b) => a.learningRate - b.learningRate)
     .slice(0, 5)
@@ -48,7 +46,6 @@ const FirstStep = () => {
         ),
       };
     });
-  console.log(quiz);
   const handleAnswerOptionClick = (ansop: IAnswerCard) => {
     if (ansop.isCorrect) {
       dispatch(encLearningRate(ansop));
