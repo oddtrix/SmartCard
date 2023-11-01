@@ -6,18 +6,18 @@ import { IUserLoginDTO, IUserSignInDTO } from "../../types/user.typing";
 export const LoginUser = createAsyncThunk(
   "auth/LoginUser",
   async (userData: IUserLoginDTO) => {
-    const { data } = await axios.post("/Authentication/Login", userData);
+    const { data } = await axios.post("api/Authentication/Login", userData);
     return data;
   }
 );
 export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async () => {
-  const { data } = await axios.get("/Authentication/Me");
+  const { data } = await axios.get("api/Authentication/Me");
   return data;
 });
 export const RegisterUser = createAsyncThunk(
   "auth/RegisterUser",
   async (userData: IUserSignInDTO) => {
-    const { data } = await axios.post("/Authentication/Register", userData);
+    const { data } = await axios.post("api/Authentication/Register", userData);
     return data;
   }
 );

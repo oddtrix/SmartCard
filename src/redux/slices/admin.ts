@@ -9,7 +9,7 @@ export const fetchUsers = createAsyncThunk("admin/fetchUsers", async () => {
   const headers = {
     Authorization: `Bearer ${token}`,
   };
-  const { data } = await axios.get("/Admin/GetUsers", { headers });
+  const { data } = await axios.get("api/Admin/GetUsers", { headers });
   return data;
 });
 
@@ -23,7 +23,7 @@ export const deleteUser = createAsyncThunk(
     const data = {
       id: userId.id,
     };
-    await axios.delete(`/Admin/DeleteUser`, { headers, data });
+    await axios.delete(`api/Admin/DeleteUser`, { headers, data });
   }
 );
 const initialState: IAdminState = {

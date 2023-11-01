@@ -17,7 +17,9 @@ export const fetchCards = createAsyncThunk(
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    const { data } = await axios.get(`/Domain/Get/${userId.id}`, { headers });
+    const { data } = await axios.get(`api/Domain/Get/${userId.id}`, {
+      headers,
+    });
     return data;
   }
 );
@@ -30,7 +32,7 @@ export const fetchCreateCard = createAsyncThunk(
       Authorization: `Bearer ${token}`,
     };
     const { data } = await axios.post(
-      `/Domain/Create`,
+      `api/Domain/Create`,
       { word: card.word, translation: card.translation },
       { headers }
     );
@@ -48,7 +50,7 @@ export const fetchDeleteCard = createAsyncThunk(
     const data = {
       id: cardId,
     };
-    await axios.delete(`/Domain/Delete`, { headers, data });
+    await axios.delete(`api/Domain/Delete`, { headers, data });
   }
 );
 
@@ -60,7 +62,7 @@ export const fetchEditCard = createAsyncThunk(
       Authorization: `Bearer ${token}`,
     };
     const { data } = await axios.put(
-      `/Domain/Update`,
+      `api/Domain/Update`,
       { id: card.id, word: card.word, translation: card.translation },
       { headers }
     );
@@ -76,7 +78,7 @@ export const encLearningRate = createAsyncThunk(
       Authorization: `Bearer ${token}`,
     };
     const { data } = await axios.put(
-      `/Domain/IncreaseLearningRate`,
+      `api/Domain/IncreaseLearningRate`,
       { id: ansop.questionWord_id },
       { headers }
     );
@@ -91,7 +93,7 @@ export const decLearningRate = createAsyncThunk(
       Authorization: `Bearer ${token}`,
     };
     const { data } = await axios.put(
-      `/Domain/DecreaseLearningRate`,
+      `api/Domain/DecreaseLearningRate`,
       { id: ansop.questionWord_id },
       { headers }
     );
