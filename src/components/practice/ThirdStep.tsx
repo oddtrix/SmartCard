@@ -19,9 +19,9 @@ const ThirdStep = () => {
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [end, setEnd] = useState(false);
-  const [learnedWords, setLearnedWords] = useState<[string, React.ReactNode][]>(
-    []
-  );
+  const [learnedWords, setLearnedWords] = useState<
+    [IAnswerCardInp, React.ReactNode, boolean][]
+  >([]);
   const quiz: IQuizCardInp[] = [...cards]
     .sort((a, b) => a.learningRate - b.learningRate)
     .slice(0, 5)
@@ -45,13 +45,11 @@ const ThirdStep = () => {
     ) as HTMLInputElement | null;
     if (inputElement) {
       let answer = inputElement.value;
-      console.log(answer);
-      console.log(ansop);
+
       if (ansop.questionWord === answer) {
-        dispatch(encLearningRate(ansop));
         setLearnedWords([
           ...learnedWords,
-          [ansop.questionWord, <span className="text-green-400">+1%</span>],
+          [ansop, <span className="text-green-400">+1%</span>, true],
         ]);
         if (answer !== "") {
           const inputElement = document.getElementById(
@@ -63,16 +61,16 @@ const ThirdStep = () => {
           }
         }
       } else {
-        dispatch(decLearningRate(ansop));
         setLearnedWords([
           ...learnedWords,
           [
-            ansop.questionWord,
+            ansop,
             ansop.questionWord_lr === 0 ? (
               "0%"
             ) : (
               <span className="text-red-400">-1%</span>
             ),
+            false,
           ],
         ]);
         const inputElement = document.getElementById(
@@ -91,7 +89,20 @@ const ThirdStep = () => {
       }
     }
   };
-
+  const updateState = (
+    learnedWords: [IAnswerCardInp, React.ReactNode, boolean][]
+  ) => {
+    learnedWords.forEach((word) => {
+      if (word[2] === true) {
+        dispatch(encLearningRate(word[0]));
+      } else {
+        dispatch(decLearningRate(word[0]));
+      }
+    });
+  };
+  React.useEffect(() => {
+    updateState(learnedWords);
+  }, [end]);
   React.useEffect(() => {
     dispatch(fetchCards({ userId }));
   }, []);
@@ -109,7 +120,7 @@ const ThirdStep = () => {
                   <ul>
                     {learnedWords.map((el) => (
                       <li key={v4()} className="text-xl">
-                        {el[0]}
+                        {el[0].questionWord}
                       </li>
                     ))}
                   </ul>

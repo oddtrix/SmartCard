@@ -18,9 +18,9 @@ const SecondStep = () => {
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [end, setEnd] = useState(false);
-  const [learnedWords, setLearnedWords] = useState<[string, React.ReactNode][]>(
-    []
-  );
+  const [learnedWords, setLearnedWords] = useState<
+    [IAnswerCard, React.ReactNode, boolean][]
+  >([]);
   const quiz = [...cards]
     .sort((a, b) => a.learningRate - b.learningRate)
     .slice(0, 5)
@@ -48,22 +48,21 @@ const SecondStep = () => {
 
   const handleAnswerOptionClick = (ansop: IAnswerCard) => {
     if (ansop.isCorrect) {
-      dispatch(encLearningRate(ansop));
       setLearnedWords([
         ...learnedWords,
-        [ansop.originalWord, <span className="text-green-400">+1%</span>],
+        [ansop, <span className="text-green-400">+1%</span>, true],
       ]);
     } else {
-      dispatch(decLearningRate(ansop));
       setLearnedWords([
         ...learnedWords,
         [
-          ansop.originalWord,
+          ansop,
           ansop.learningRate === 0 ? (
             "0%"
           ) : (
             <span className="text-red-400">-1%</span>
           ),
+          false,
         ],
       ]);
     }
@@ -74,6 +73,20 @@ const SecondStep = () => {
       setEnd(true);
     }
   };
+  const updateState = (
+    learnedWords: [IAnswerCard, React.ReactNode, boolean][]
+  ) => {
+    learnedWords.forEach((word) => {
+      if (word[2] === true) {
+        dispatch(encLearningRate(word[0]));
+      } else {
+        dispatch(decLearningRate(word[0]));
+      }
+    });
+  };
+  React.useEffect(() => {
+    updateState(learnedWords);
+  }, [end]);
   React.useEffect(() => {
     dispatch(fetchCards({ userId }));
   }, []);
@@ -91,7 +104,7 @@ const SecondStep = () => {
                   <ul>
                     {learnedWords.map((el) => (
                       <li key={v4()} className="text-xl ">
-                        {el[0]}
+                        {el[0].originalWord}
                       </li>
                     ))}
                   </ul>
