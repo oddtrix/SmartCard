@@ -50,13 +50,12 @@ const SignIn = () => {
 
   const submitForm = async (data: IUserLoginDTO) => {
     const result = await dispatch(LoginUser(data));
+    console.log(result);
     if (result.meta.requestStatus === "rejected") {
       setError("root.serverError", { type: "404" });
     }
-    if (result.payload) {
-      if ("token" in result.payload) {
-        window.localStorage.setItem("token", result.payload.token);
-      }
+    if ("message" in result.payload) {
+      window.localStorage.setItem("token", result.payload.message);
     }
   };
   setTimeout(() => {
