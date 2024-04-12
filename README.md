@@ -1,27 +1,7 @@
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+![1](https://github.com/oddtrix/SmartCard/assets/75144920/d2a79ef3-bae1-4cb0-a4de-7358571d0f35)
+![2](https://github.com/oddtrix/SmartCard/assets/75144920/1ae1354f-83cf-46ba-9796-ee9cd1680dc5)
+![3](https://github.com/oddtrix/SmartCard/assets/75144920/7a26e23b-c734-4bbb-8bb3-eb4a295d0651)
+![7](https://github.com/oddtrix/SmartCard/assets/75144920/0b47fda4-60de-4537-91c5-ebd254370bca)
+![4](https://github.com/oddtrix/SmartCard/assets/75144920/6638be4f-1ec1-4763-b1bf-cf964cedd573)
+![5](https://github.com/oddtrix/SmartCard/assets/75144920/7a223a25-f990-4d71-bc05-9a63c089488d)
+![6](https://github.com/oddtrix/SmartCard/assets/75144920/4ca83ace-a5a4-464f-b356-b4f6aa43eaff)
